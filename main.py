@@ -1,14 +1,10 @@
 """
 Autor: Sven Kleinhans
-Beschreibung:
-Hier befindet sich ausschließlich die Main Klasse für die UI.
-Jegliche funktionen oder anpassungen müssen die die Datei "custom_classes.py" geschrieben werden.
+Version: 1.2
 
 ToDo:
     - Multiprocessing
-    - In der UI links einen Slider mit dem Menü, zum ein und ausblenden
     - Design/Farbwechsel einbauen
-    - Auflösung passt nicht auf 4k Display zu 1080p?
 """
 import crypt
 import sys
@@ -23,6 +19,35 @@ import resources
 
 
 GLOBAL_STATE = 0
+
+
+class InfoDialog(QDialog):
+    def __init__(self):
+        super(InfoDialog, self).__init__()
+        loadUi("info.ui", self)
+
+        self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
+        self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
+        self.header = self.findChild(QFrame, 'header')
+        self.close = self.findChild(QPushButton, 'close')
+
+        def move_window(event):
+            """
+            Wenn mit dem linken Mouse button das Fenster bewegt wird,
+            wird die neue Position errechnet.
+            """
+            if event.buttons() == Qt.MouseButton.LeftButton:
+                self.move(self.pos() + event.globalPos() - self.drag_pos)
+                self.drag_pos = event.globalPos()
+                event.accept()
+            else:
+                event.ignore()
+        self.header.mouseMoveEvent = move_window
+
+        def window_pressed(event):
+            """Wenn das Fenster am Header angedrückt wird, aktuelle Position zwischenspeichern."""
+            self.drag_pos = event.globalPos()
+        self.header.mousePressEvent = window_pressed
 
 
 class Ui(QMainWindow):
@@ -64,13 +89,15 @@ class Ui(QMainWindow):
         self.sizegrip_br = self.findChild(QFrame, 'sizegrip_br')
         self.progress_bar = self.findChild(QProgressBar, 'progress_bar')
         self.main_layout = self.findChild(QLayout, 'main_layout')
+        self.main_frame = self.findChild(QFrame, 'main_frame')
+        self.header = self.findChild(QFrame, 'header')
         self.enc = self.findChild(QRadioButton, 'enc')
         self.dec = self.findChild(QRadioButton, 'dec')
         self.message = self.findChild(QTextBrowser, 'message')
         self.drop_data = self.findChild(DragDrop, 'drop_data')
         self.delete_files = self.findChild(QCheckBox, 'delete_files')
         self.side_menu = self.findChild(QFrame, 'side_menu')
-        self.info_bnt = self.findChild(QPushButton, 'info_btn')
+        self.info_btn = self.findChild(QPushButton, 'info_btn')
         # Objekt für die Animation des Sidemenu
         self.anim = QPropertyAnimation(self.side_menu, b'maximumWidth')
 
@@ -118,19 +145,21 @@ class Ui(QMainWindow):
             self.showNormal()
             GLOBAL_STATE = 0
             self.main_layout.setContentsMargins(10, 10, 10, 10)
-            self.main_frame.setStyleSheet("background-color: rgb(13, 12, 23);\nborder-radius: 10px;")
+            stylesheet = self.main_frame.styleSheet() + "\n" + "QFrame{border-radius: 10px;}"
+            self.main_frame.setStyleSheet(stylesheet)
         else:
             self.showMaximized()
             GLOBAL_STATE = 1
             self.main_layout.setContentsMargins(0, 0, 0, 0)
-            self.main_frame.setStyleSheet("background-color: rgb(13, 12, 23);\nborder-radius: 0px;")
+            stylesheet = self.main_frame.styleSheet() + "\n" + "QFrame{border-radius: 0px;}"
+            self.main_frame.setStyleSheet(stylesheet)
 
     def animate_sidemenu(self) -> None:
         """Animieren des Sidemenu"""
         if self.side_menu.frameGeometry().width() > 60:
             # Sidemenu schließen
             start_value = self.side_menu.frameGeometry().width()
-            end_value = 60
+            end_value = 50
         else:
             # Sidemenu öffnen
             start_value = self.side_menu.frameGeometry().width()
@@ -214,7 +243,6 @@ class Main:
         if hasattr(Qt, 'AA_UseHighDpiPixmaps'):
             QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps, True)
         app = QApplication(sys.argv)
-        # UI Objekt erstellen
         self.ui = Ui()
 
         # Events für die UI definieren
@@ -427,21 +455,11 @@ class Main:
                 self.ui.drop_data.takeItem(index)  # Item aus dem QListWidget löschen
                 del self.ui.drop_data.paths[index]  # Item aus der paths-Liste löschen
 
-    @staticmethod
-    def show_info() -> None:
+    def show_info(self) -> None:
         """Anzeigen des Information Festers und formatieren von diesem."""
-        info_message = QMessageBox()
-        info_message.setWindowIcon(QIcon("icon\\Info.png"))
-        info_message.setWindowTitle("Info")
-        info_message.setText("1. Datei oder Verzeichnis auswählen\n"
-                             "2. Wählen zwischen entschlüsseln und verschlüsseln\n"
-                             "3. Passwort eingeben\n"
-                             "Ein sicheres Passwort muss mindestens:\n"
-                             "  - 10 Zeichen beinhalten\n"
-                             "  - Einen Groß- und Kleinbuchstaben beinhalten\n"
-                             "  - Ein '#', '%', '@' oder '$' beinhalten\n")
-        info_message.show()
-        info_message.exec()
+        info_dialog = InfoDialog()
+        info_dialog.close.clicked.connect(info_dialog.accept)
+        info_dialog.exec_()
 
 
 if __name__ == "__main__":
