@@ -32,21 +32,24 @@ class Ui(QMainWindow):
     setup_ui():
         UI laden und anpassungen an dieser vornehmen.
 
-    move_window(e):
+    move_window(event):
         Wenn mit dem linken Mouse button das Fenster bewegt wird,
         wird die neue Position errechnet.
 
-    window_pressed(e):
+    window_pressed(event):
         Wenn das Fenster am Header angedrückt wird, aktuelle Position zwischenspeichern.
 
-    get_password():
-        einlesen und überprüfung des Passworts. Aufruf des workers
+    ui_definitions():
+        Hier werden alle definitionen der UI getroffen
+
+    maximize_restore():
+        Window maximieren oder minimieren. Abfrage des aktuellen Status erfolgt über den GLOBAL_STATE
+    animate_sidemenu():
+        Animieren des Sidemenu
     """
     def __init__(self):
         super(Ui, self).__init__()
         loadUi("GUI.ui", self)
-        self.file_list = []
-        self.password = ""
 
         # Objekte in der UI finden
         self.pass_input = self.findChild(QLineEdit, 'pass_input')
@@ -67,6 +70,7 @@ class Ui(QMainWindow):
         self.drop_data = self.findChild(DragDrop, 'drop_data')
         self.delete_files = self.findChild(QCheckBox, 'delete_files')
         self.side_menu = self.findChild(QFrame, 'side_menu')
+        self.info_bnt = self.findChild(QPushButton, 'info_btn')
         # Objekt für die Animation des Sidemenu
         self.anim = QPropertyAnimation(self.side_menu, b'maximumWidth')
 
@@ -93,28 +97,22 @@ class Ui(QMainWindow):
     def setup_ui(self) -> None:
         """UI laden und anpassungen an dieser vornehmen."""
         self.ui_definitions()
-        self.close.clicked.connect(app.quit)
         self.show()
 
     def ui_definitions(self) -> None:
-        """Hier werden alle definition der UI getroffen oder Events gestartet"""
+        """Hier werden alle definitionen der UI getroffen"""
         self.pass_input.textChanged.connect(lambda: self.start_button.setEnabled(True))
-        self.remove_all.clicked.connect(self.remove_all_items)
-        self.remove_selected.clicked.connect(self.remove_selected_items)
-        self.pass_input.returnPressed.connect(self.worker)
-        self.start_button.clicked.connect(self.worker)
         self.slider.clicked.connect(self.animate_sidemenu)
-
         self.setWindowIcon(QIcon(r"icon\icon.png"))
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
         QSizeGrip(self.sizegrip_bl)
         QSizeGrip(self.sizegrip_br)
-
         self.minimize.clicked.connect(self.showMinimized)
         self.maximize.clicked.connect(self.maximize_restore)
 
     def maximize_restore(self) -> None:
+        """Window maximieren oder minimieren. Abfrage des aktuellen Status erfolgt über den GLOBAL_STATE"""
         global GLOBAL_STATE
         if GLOBAL_STATE == 1:
             self.showNormal()
@@ -128,6 +126,7 @@ class Ui(QMainWindow):
             self.main_frame.setStyleSheet("background-color: rgb(13, 12, 23);\nborder-radius: 0px;")
 
     def animate_sidemenu(self) -> None:
+        """Animieren des Sidemenu"""
         if self.side_menu.frameGeometry().width() > 60:
             # Sidemenu schließen
             start_value = self.side_menu.frameGeometry().width()
@@ -143,6 +142,91 @@ class Ui(QMainWindow):
         self.anim.setEasingCurve(QEasingCurve.InOutQuart)
         self.anim.start()
 
+
+class Main:
+    """
+    worker():
+        Aufruf der Funktion "get_inputs", um die Pfade und das Passwort einzulesen.
+        Abfrage, ob verschlüsseln oder entschlüsseln in der UI ausgewählt wurde.
+        Aufruf der Verschlüsselungs/Entschlüsselungs-Algorithmen in der Datei "crypt.py".
+        Überprüfung ob Dateien nach dem Vorgang gelöscht werden sollen.
+        Setzen der Statusmeldungen in der UI über die Funktion "messages".
+
+    get_inputs():
+        Einlesen der Pfade und des Passworts.
+
+    sort_input(input_list):
+        Sortieren der gedroppten Dateien/Ordner.
+        Dadurch wird eine Liste mit allen Dateipfaden erstellt.
+
+    checking_folder(path):
+        Ablöschen des Messagefensters.
+        Start der Suche nach Dateien im ausgewähltem Ordner.
+
+    open_directory(path):
+        Überprüfung ob path ein Verzeichnis ist.
+        Anschließender Aufruf der "search_in_folder" Funktion.
+
+    search_in_folder(paths):
+        Durchsuchen des Ordners nach Dateien und nach Unterordnern.
+        In den Unterordnern ebenfalls nach Dateien suchen.
+        Die Pfade dieser Dateien werden alle in die file_list geschrieben.
+
+    extend_dir(path_list, path):
+        Dateiname durch den restlichen Pfad erweitern.
+
+    get_password():
+        Einlesen und überprüfung des Passworts, sowie generierung von Fehlermeldung.
+
+    check_password(password):
+        überprüfung des Passworts, ob es den vordefinierten Kriterien entspricht.
+
+    check_enc_or_dec():
+        Einlesen ob enc oder dec ausgewählt ist in der UI.
+
+    messages(num, file):
+        Erzeugen der auszugebenden Nachricht. Auf Basis der Variablen ''num' und 'file'.
+
+    change_colour(colour, msg):
+        Ändern der Farbe der auszugebenden Nachricht.
+
+    clear_message():
+        Ablöschen des Messagefensters und freischalten der Passworteingabe.
+
+    clear_all():
+        Ablöschen der Passworteingabe, des QListWidgetItems und der file_list.
+
+    remove_all_items():
+        lle Items im QListWidget löschen.
+
+    remove_selected_items():
+        Alle ausgewählten Items im QListWidget löschen.
+
+    show_info():
+        Anzeigen des Information Festers und formatieren von diesem.
+    """
+    def __init__(self):
+        self.file_list = []
+        self.password = ""
+        # Enable High DPI Display
+        if hasattr(Qt, 'AA_EnableHighDpiScaling'):
+            QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
+        if hasattr(Qt, 'AA_UseHighDpiPixmaps'):
+            QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps, True)
+        app = QApplication(sys.argv)
+        # UI Objekt erstellen
+        self.ui = Ui()
+
+        # Events für die UI definieren
+        self.ui.remove_all.clicked.connect(self.remove_all_items)
+        self.ui.remove_selected.clicked.connect(self.remove_selected_items)
+        self.ui.pass_input.returnPressed.connect(self.worker)
+        self.ui.start_button.clicked.connect(self.worker)
+        self.ui.info_btn.clicked.connect(self.show_info)
+        self.ui.close.clicked.connect(app.quit)
+
+        sys.exit(app.exec())
+
     def worker(self) -> None:
         """
         Aufruf der Funktion "get_inputs", um die Pfade und das Passwort einzulesen.
@@ -153,7 +237,7 @@ class Ui(QMainWindow):
         """
         self.get_inputs()
         if self.password:
-            self.progress_bar.setValue(0)
+            self.ui.progress_bar.setValue(0)
             parts = round(100 / len(self.file_list))  # Prozent teile je Datei
             enc_or_dec = self.check_enc_or_dec()
             for i, file in enumerate(self.file_list):
@@ -165,16 +249,16 @@ class Ui(QMainWindow):
                     num = crypt.encrypt(file, self.password)
                 else:
                     num = crypt.decrypt(file, self.password)
-                if self.delete_files.isChecked():
+                if self.ui.delete_files.isChecked():
                     os.remove(file)
                 self.messages(num, file)
-                self.progress_bar.setValue(parts * (i + 1))
+                self.ui.progress_bar.setValue(parts * (i + 1))
             self.messages(6, '')  # Setzen der Statusmeldung "Fertig"
             self.clear_all()
 
     def get_inputs(self) -> None:
         """Einlesen der Pfade und des Passworts."""
-        paths = self.drop_data.get_paths()  # Pfade aus der Klasse DragDrop lesen
+        paths = self.ui.drop_data.get_paths()  # Pfade aus der Klasse DragDrop lesen
         if paths:
             self.sort_input(paths)
             self.get_password()
@@ -236,12 +320,12 @@ class Ui(QMainWindow):
 
     def get_password(self) -> None:
         """Einlesen und überprüfung des Passworts, sowie generierung von Fehlermeldung."""
-        self.password = self.pass_input.text()
+        self.password = self.ui.pass_input.text()
         if not self.check_password(self.password):
             self.messages(0, '')  # Passwort entspricht nicht den Kriterien
             self.file_list = []
             self.password = ""
-            self.pass_input.clear()
+            self.ui.pass_input.clear()
         elif not self.file_list:
             self.messages(9, '')  # keine Dateien ausgewählt
         else:
@@ -266,12 +350,12 @@ class Ui(QMainWindow):
 
     def check_enc_or_dec(self) -> str:
         """Einlesen ob enc oder dec ausgewählt ist in der UI."""
-        if self.enc.isChecked():
+        if self.ui.enc.isChecked():
             return 'enc'
         return 'dec'
 
     def messages(self, num: int, file: str) -> None:
-        """Erzeugen der auszugebenden Nachricht. Auf Basis der Variablen "num" und "file"."""
+        """Erzeugen der auszugebenden Nachricht. Auf Basis der Variablen 'num' und 'file'."""
         colour = ""
         msg = ""
         if num == 0:
@@ -315,36 +399,36 @@ class Ui(QMainWindow):
             msg = f'<span style=\" color: #ED422C;\">{msg}</span>'
         elif colour == "green":
             msg = f'<span style=\" color: #afb1b3;\">{msg}</span>'
-        self.message.append(msg)
+        self.ui.message.append(msg)
 
     def clear_message(self) -> None:
         """Ablöschen des Messagefensters und freischalten der Passworteingabe."""
-        self.message.clear()
-        self.pass_input.setEnabled(True)
+        self.ui.message.clear()
+        self.ui.pass_input.setEnabled(True)
 
     def clear_all(self) -> None:
         """Ablöschen der Passworteingabe, des QListWidgetItems und der file_list."""
-        self.pass_input.clear()
+        self.ui.pass_input.clear()
         self.remove_all_items()
         self.file_list = []
 
     def remove_all_items(self) -> None:
         """Alle Items im QListWidget löschen."""
-        self.drop_data.clear()
-        self.drop_data.paths = []
+        self.ui.drop_data.clear()
+        self.ui.drop_data.paths = []
 
     def remove_selected_items(self) -> None:
         """Alle ausgewählten Items im QListWidget löschen."""
-        items = [self.drop_data.item(x) for x in range(self.drop_data.count())]
+        items = [self.ui.drop_data.item(x) for x in range(self.ui.drop_data.count())]
         for item in items:
-            self.drop_data.setCurrentItem(item)
-            index = self.drop_data.currentRow()
+            self.ui.drop_data.setCurrentItem(item)
+            index = self.ui.drop_data.currentRow()
             if item.checkState() == Qt.CheckState.Checked:
-                self.drop_data.takeItem(index)  # Item aus dem QListWidget löschen
-                del self.drop_data.paths[index]  # Item aus der paths-Liste löschen
+                self.ui.drop_data.takeItem(index)  # Item aus dem QListWidget löschen
+                del self.ui.drop_data.paths[index]  # Item aus der paths-Liste löschen
 
-    # Wird aktuelle nicht aufgerufen → sollte vom Infobutton im Menü aufgerufen werden
-    def show_info(self) -> None:
+    @staticmethod
+    def show_info() -> None:
         """Anzeigen des Information Festers und formatieren von diesem."""
         info_message = QMessageBox()
         info_message.setWindowIcon(QIcon("icon\\Info.png"))
@@ -361,11 +445,4 @@ class Ui(QMainWindow):
 
 
 if __name__ == "__main__":
-    # Enable High DPI Display
-    if hasattr(Qt, 'AA_EnableHighDpiScaling'):
-        QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
-    if hasattr(Qt, 'AA_UseHighDpiPixmaps'):
-        QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps, True)
-    app = QApplication(sys.argv)
-    window = Ui()
-    sys.exit(app.exec())
+    main = Main()
