@@ -1,10 +1,6 @@
 """
-Autor: Sven Kleinhans
+Author: Sven Kleinhans
 Version: 1.2
-
-ToDo:
-    - Multiprocessing
-    - Design/Farbwechsel einbauen
 """
 import crypt
 import sys
@@ -14,7 +10,7 @@ from PyQt5.uic import loadUi
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import Qt, QPropertyAnimation, QAbstractAnimation, QEasingCurve
 from PyQt5.QtGui import QIcon
-# Beinhaltet die Icons und sonstige resourcen
+# The resource file wich contains the icons as bytes
 import resources
 
 
@@ -24,7 +20,7 @@ GLOBAL_STATE = 0
 class Settings(QDialog):
     def __init__(self):
         super(Settings, self).__init__()
-        loadUi("settings.ui", self)
+        loadUi("UI-files/settings.ui", self)
 
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
@@ -32,10 +28,7 @@ class Settings(QDialog):
         self.close = self.findChild(QPushButton, 'close')
 
         def move_window(event):
-            """
-            Wenn mit dem linken Mouse button das Fenster bewegt wird,
-            wird die neue Position errechnet.
-            """
+            """Calculate the new position of the window and move it"""
             if event.buttons() == Qt.MouseButton.LeftButton:
                 self.move(self.pos() + event.globalPos() - self.drag_pos)
                 self.drag_pos = event.globalPos()
@@ -45,7 +38,7 @@ class Settings(QDialog):
         self.header.mouseMoveEvent = move_window
 
         def window_pressed(event):
-            """Wenn das Fenster am Header angedrückt wird, aktuelle Position zwischenspeichern."""
+            """Save the global position of the window"""
             self.drag_pos = event.globalPos()
         self.header.mousePressEvent = window_pressed
 
@@ -53,7 +46,7 @@ class Settings(QDialog):
 class InfoDialog(QDialog):
     def __init__(self):
         super(InfoDialog, self).__init__()
-        loadUi("info.ui", self)
+        loadUi("UI-files/info.ui", self)
 
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
@@ -61,10 +54,7 @@ class InfoDialog(QDialog):
         self.close = self.findChild(QPushButton, 'close')
 
         def move_window(event):
-            """
-            Wenn mit dem linken Mouse button das Fenster bewegt wird,
-            wird die neue Position errechnet.
-            """
+            """Calculate the new position of the window and move it"""
             if event.buttons() == Qt.MouseButton.LeftButton:
                 self.move(self.pos() + event.globalPos() - self.drag_pos)
                 self.drag_pos = event.globalPos()
@@ -74,7 +64,7 @@ class InfoDialog(QDialog):
         self.header.mouseMoveEvent = move_window
 
         def window_pressed(event):
-            """Wenn das Fenster am Header angedrückt wird, aktuelle Position zwischenspeichern."""
+            """Save the global position of the window"""
             self.drag_pos = event.globalPos()
         self.header.mousePressEvent = window_pressed
 
@@ -84,28 +74,19 @@ class Ui(QMainWindow):
     Methods
     -------
     setup_ui():
-        UI laden und anpassungen an dieser vornehmen.
-
-    move_window(event):
-        Wenn mit dem linken Mouse button das Fenster bewegt wird,
-        wird die neue Position errechnet.
-
-    window_pressed(event):
-        Wenn das Fenster am Header angedrückt wird, aktuelle Position zwischenspeichern.
-
-    ui_definitions():
-        Hier werden alle definitionen der UI getroffen
+        Setup UI and make definitions
 
     maximize_restore():
-        Window maximieren oder minimieren. Abfrage des aktuellen Status erfolgt über den GLOBAL_STATE
+        Maximize the Window or restore the default size
+
     animate_sidemenu():
-        Animieren des Sidemenu
+        Animate the Sidemenu
     """
     def __init__(self):
         super(Ui, self).__init__()
-        loadUi("GUI.ui", self)
+        loadUi("UI-files/GUI.ui", self)
 
-        # Objekte in der UI finden
+        # Find objects in the UI-XML
         self.pass_input = self.findChild(QLineEdit, 'pass_input')
         self.remove_all = self.findChild(QPushButton, 'remove_all')
         self.close = self.findChild(QPushButton, 'close')
@@ -128,16 +109,12 @@ class Ui(QMainWindow):
         self.side_menu = self.findChild(QFrame, 'side_menu')
         self.info_btn = self.findChild(QPushButton, 'info_btn')
         self.settings_btn = self.findChild(QPushButton, 'settings_btn')
-        # Objekt für die Animation des Sidemenu
         self.anim = QPropertyAnimation(self.side_menu, b'maximumWidth')
 
         self.setup_ui()
 
         def move_window(event):
-            """
-            Wenn mit dem linken Mouse button das Fenster bewegt wird,
-            wird die neue Position errechnet.
-            """
+            """Calculate the new position of the window and move it"""
             if event.buttons() == Qt.MouseButton.LeftButton:
                 self.move(self.pos() + event.globalPos() - self.drag_pos)
                 self.drag_pos = event.globalPos()
@@ -147,29 +124,25 @@ class Ui(QMainWindow):
         self.header.mouseMoveEvent = move_window
 
         def window_pressed(event):
-            """Wenn das Fenster am Header angedrückt wird, aktuelle Position zwischenspeichern."""
+            """Save the global position of the window"""
             self.drag_pos = event.globalPos()
         self.header.mousePressEvent = window_pressed
 
     def setup_ui(self) -> None:
-        """UI laden und anpassungen an dieser vornehmen."""
-        self.ui_definitions()
-        self.show()
-
-    def ui_definitions(self) -> None:
-        """Hier werden alle definitionen der UI getroffen"""
+        """Setup UI and make definitions"""
         self.pass_input.textChanged.connect(lambda: self.start_button.setEnabled(True))
         self.slider.clicked.connect(self.animate_sidemenu)
-        self.setWindowIcon(QIcon(r"icon\icon.png"))
+        self.setWindowIcon(QIcon(r"UI-files/icons/logo.png"))
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
         QSizeGrip(self.sizegrip_bl)
         QSizeGrip(self.sizegrip_br)
         self.minimize.clicked.connect(self.showMinimized)
         self.maximize.clicked.connect(self.maximize_restore)
+        self.show()
 
     def maximize_restore(self) -> None:
-        """Window maximieren oder minimieren. Abfrage des aktuellen Status erfolgt über den GLOBAL_STATE"""
+        """Maximize the Window or restore the default size"""
         global GLOBAL_STATE
         if GLOBAL_STATE == 1:
             self.showNormal()
@@ -185,13 +158,13 @@ class Ui(QMainWindow):
             self.main_frame.setStyleSheet(stylesheet)
 
     def animate_sidemenu(self) -> None:
-        """Animieren des Sidemenu"""
+        """Animate the Sidemenu"""
         if self.side_menu.frameGeometry().width() > 60:
-            # Sidemenu schließen
+            # Close Sidemenu
             start_value = self.side_menu.frameGeometry().width()
             end_value = 50
         else:
-            # Sidemenu öffnen
+            # Open Sidemenu
             start_value = self.side_menu.frameGeometry().width()
             end_value = 200
         self.anim.DeletionPolicy(QAbstractAnimation.KeepWhenStopped)
@@ -205,64 +178,49 @@ class Ui(QMainWindow):
 class Main:
     """
     worker():
-        Aufruf der Funktion "get_inputs", um die Pfade und das Passwort einzulesen.
-        Abfrage, ob verschlüsseln oder entschlüsseln in der UI ausgewählt wurde.
-        Aufruf der Verschlüsselungs/Entschlüsselungs-Algorithmen in der Datei "crypt.py".
-        Überprüfung ob Dateien nach dem Vorgang gelöscht werden sollen.
-        Setzen der Statusmeldungen in der UI über die Funktion "messages".
+        The worker for the encryption and decryption
 
     get_inputs():
-        Einlesen der Pfade und des Passworts.
+        Create the input paths and get the password
 
     sort_input(input_list):
-        Sortieren der gedroppten Dateien/Ordner.
-        Dadurch wird eine Liste mit allen Dateipfaden erstellt.
-
-    checking_folder(path):
-        Ablöschen des Messagefensters.
-        Start der Suche nach Dateien im ausgewähltem Ordner.
-
-    open_directory(path):
-        Überprüfung ob path ein Verzeichnis ist.
-        Anschließender Aufruf der "search_in_folder" Funktion.
+        Generate a file list from the input paths
 
     search_in_folder(paths):
-        Durchsuchen des Ordners nach Dateien und nach Unterordnern.
-        In den Unterordnern ebenfalls nach Dateien suchen.
-        Die Pfade dieser Dateien werden alle in die file_list geschrieben.
+        Search for files in folders
 
     extend_dir(path_list, path):
-        Dateiname durch den restlichen Pfad erweitern.
+        Return a list with the full names of the files in the folder
 
     get_password():
-        Einlesen und überprüfung des Passworts, sowie generierung von Fehlermeldung.
+        Get password from user input
 
     check_password(password):
-        überprüfung des Passworts, ob es den vordefinierten Kriterien entspricht.
+        Return true if the password is valid
 
     check_enc_or_dec():
-        Einlesen ob enc oder dec ausgewählt ist in der UI.
+        Return the operation
 
     messages(num, file):
-        Erzeugen der auszugebenden Nachricht. Auf Basis der Variablen ''num' und 'file'.
+        Create the message
 
-    change_colour(colour, msg):
-        Ändern der Farbe der auszugebenden Nachricht.
-
-    clear_message():
-        Ablöschen des Messagefensters und freischalten der Passworteingabe.
+    set_colour(colour, msg):
+        Set the colour of the message
 
     clear_all():
-        Ablöschen der Passworteingabe, des QListWidgetItems und der file_list.
+        Clear all for the next run
 
     remove_all_items():
-        lle Items im QListWidget löschen.
+        Remove all items from the QListWidget
 
     remove_selected_items():
-        Alle ausgewählten Items im QListWidget löschen.
+        Remove all selected items from the QListWidget
 
     show_info():
-        Anzeigen des Information Festers und formatieren von diesem.
+        Show the Info Dialog
+
+    show_settings():
+        Show the Settings Dialog
     """
     def __init__(self):
         self.file_list = []
@@ -275,7 +233,7 @@ class Main:
         app = QApplication(sys.argv)
         self.ui = Ui()
 
-        # Events für die UI definieren
+        # Define Events for the UI
         self.ui.remove_all.clicked.connect(self.remove_all_items)
         self.ui.remove_selected.clicked.connect(self.remove_selected_items)
         self.ui.pass_input.returnPressed.connect(self.worker)
@@ -287,17 +245,11 @@ class Main:
         sys.exit(app.exec())
 
     def worker(self) -> None:
-        """
-        Aufruf der Funktion "get_inputs", um die Pfade und das Passwort einzulesen.
-        Abfrage, ob verschlüsseln oder entschlüsseln in der UI ausgewählt wurde.
-        Aufruf der Verschlüsselungs/Entschlüsselungs-Algorithmen in der Datei "crypt.py".
-        Überprüfung ob Dateien nach dem Vorgang gelöscht werden sollen.
-        Setzen der Statusmeldungen in der UI über die Funktion "messages".
-        """
+        """The worker for the encryption and decryption"""
         self.get_inputs()
         if self.password:
             self.ui.progress_bar.setValue(0)
-            parts = round(100 / len(self.file_list))  # Prozent teile je Datei
+            parts = round(100 / len(self.file_list))
             enc_or_dec = self.check_enc_or_dec()
             for i, file in enumerate(self.file_list):
                 if file.lower().endswith('.pdf') and enc_or_dec == 'enc':
@@ -313,51 +265,31 @@ class Main:
                 self.messages(num, file)
                 self.ui.progress_bar.setValue(parts * (i + 1))
             self.ui.progress_bar.setValue(100)
-            self.messages(2, '')  # Setzen der Statusmeldung "Fertig"
+            self.messages(2, '')  # Finished
             self.clear_all()
 
     def get_inputs(self) -> None:
-        """Einlesen der Pfade und des Passworts."""
-        paths = self.ui.drop_data.get_paths()  # Pfade aus der Klasse DragDrop lesen
+        """Create the input paths and get the password"""
+        paths = self.ui.drop_data.get_paths()
         if paths:
             self.sort_input(paths)
             self.get_password()
         else:
-            self.messages(106, "")  # Keine Dateien ausgewählt
+            self.messages(106, "")  # No files selected
 
     def sort_input(self, input_list: list) -> None:
-        """
-        Sortieren der gedroppten Dateien/Ordner.
-        Dadurch wird eine Liste mit allen Dateipfaden erstellt.
-        """
+        """Generate a file list from the input paths"""
+        self.ui.message.clear()
+        self.ui.pass_input.setEnabled(True)
         for path in input_list:
             if os.path.isdir(path):
-                self.checking_folder(path)
+                liste = self.extend_dir(os.listdir(path), path)
+                self.search_in_folder(liste)
             else:
                 self.file_list.append(path)
 
-    def checking_folder(self, path: str) -> None:
-        """
-        Ablöschen des Messagefensters.
-        Start der Suche nach Dateien im ausgewähltem Ordner.
-        """
-        self.clear_message()
-        self.open_directory(path)
-
-    def open_directory(self, path: str) -> None:
-        """
-        Überprüfung ob path ein Verzeichnis ist.
-        Anschließender Aufruf der "search_in_folder" Funktion.
-        """
-        liste = self.extend_dir(os.listdir(path), path)
-        self.search_in_folder(liste)
-
     def search_in_folder(self, paths: list) -> None:
-        """
-        Durchsuchen des Ordners nach Dateien und nach Unterordnern.
-        In den Unterordnern ebenfalls nach Dateien suchen.
-        Die Pfade dieser Dateien werden alle in die file_list geschrieben.
-        """
+        """Search for files in folders"""
         while paths:
             under_paths = []
             for path in paths:
@@ -374,26 +306,26 @@ class Main:
 
     @staticmethod
     def extend_dir(path_list: list, path: str) -> list:
-        """Dateiname durch den restlichen Pfad erweitern."""
+        """Return a list with the full names of the files in the folder"""
         path_list = [path + "\\" + item for item in path_list]
         return path_list
 
     def get_password(self) -> None:
-        """Einlesen und überprüfung des Passworts, sowie generierung von Fehlermeldung."""
+        """Get password from user input"""
         self.password = self.ui.pass_input.text()
         if not self.check_password(self.password):
-            self.messages(100, '')  # Passwort entspricht nicht den Kriterien
+            self.messages(100, '')  # Password not valid
             self.file_list = []
             self.password = ""
             self.ui.pass_input.clear()
         elif not self.file_list:
-            self.messages(106, '')  # keine Dateien ausgewählt
+            self.messages(106, '')  # No files selected
         else:
-            self.messages(1, '')  # Passwort gültig
+            self.messages(1, '')  # Password valid
 
     @staticmethod
     def check_password(password: str) -> bool:
-        """überprüfung des Passworts, ob es den vordefinierten Kriterien entspricht."""
+        """Return true if the password is valid"""
         special_sym = ['#', '%', '@', '$']
         val = True
         if len(password) < 10:
@@ -409,13 +341,13 @@ class Main:
         return val
 
     def check_enc_or_dec(self) -> str:
-        """Einlesen ob enc oder dec ausgewählt ist in der UI."""
+        """Return the operation"""
         if self.ui.enc.isChecked():
             return 'enc'
         return 'dec'
 
     def messages(self, num: int, file: str) -> None:
-        """Erzeugen der auszugebenden Nachricht. Auf Basis der Variablen 'num' und 'file'."""
+        """Create the message"""
         file = os.path.basename(file)
         colour = ""
         msg = ""
@@ -458,51 +390,47 @@ class Main:
         elif num == 108:
             msg = f"Fehlende Berechtigung für die Datei {file}!"
             colour = "red"
+        self.set_colour(colour, msg)
 
-
-        self.change_colour(colour, msg)
-
-    def change_colour(self, colour: str, msg: str) -> None:
-        """Ändern der Farbe der auszugebenden Nachricht."""
+    def set_colour(self, colour: str, msg: str) -> None:
+        """Set the colour of the message"""
         if colour == "red":
             msg = f'<span style=\" color: #ED422C;\">{msg}</span>'
         elif colour == "green":
             msg = f'<span style=\" color: #afb1b3;\">{msg}</span>'
         self.ui.message.append(msg)
 
-    def clear_message(self) -> None:
-        """Ablöschen des Messagefensters und freischalten der Passworteingabe."""
-        self.ui.message.clear()
-        self.ui.pass_input.setEnabled(True)
-
     def clear_all(self) -> None:
-        """Ablöschen der Passworteingabe, des QListWidgetItems und der file_list."""
+        """Clear all for the next run"""
         self.ui.pass_input.clear()
         self.remove_all_items()
         self.file_list = []
 
     def remove_all_items(self) -> None:
-        """Alle Items im QListWidget löschen."""
+        """Remove all items from the QListWidget"""
         self.ui.drop_data.clear()
         self.ui.drop_data.paths = []
 
     def remove_selected_items(self) -> None:
-        """Alle ausgewählten Items im QListWidget löschen."""
+        """Remove all selected items from the QListWidget"""
         items = [self.ui.drop_data.item(x) for x in range(self.ui.drop_data.count())]
         for item in items:
             self.ui.drop_data.setCurrentItem(item)
             index = self.ui.drop_data.currentRow()
             if item.checkState() == Qt.CheckState.Checked:
-                self.ui.drop_data.takeItem(index)  # Item aus dem QListWidget löschen
-                del self.ui.drop_data.paths[index]  # Item aus der paths-Liste löschen
+                self.ui.drop_data.takeItem(index)
+                del self.ui.drop_data.paths[index]
 
-    def show_info(self) -> None:
-        """Anzeigen des Information Festers und formatieren von diesem."""
+    @staticmethod
+    def show_info() -> None:
+        """Show the Info Dialog"""
         info_dialog = InfoDialog()
         info_dialog.close.clicked.connect(info_dialog.accept)
         info_dialog.exec_()
 
-    def show_settings(self) -> None:
+    @staticmethod
+    def show_settings() -> None:
+        """Show the Settings Dialog"""
         settings_dialog = Settings()
         settings_dialog.close.clicked.connect(settings_dialog.accept)
         settings_dialog.exec_()

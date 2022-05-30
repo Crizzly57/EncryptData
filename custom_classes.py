@@ -1,5 +1,5 @@
 """
-Autor: Sven Kleinhans
+Author: Sven Kleinhans
 """
 
 import os
@@ -13,28 +13,23 @@ class DragDrop(QListWidget):
     Methods
     -------
     set_check_state(item):
-        Beim anklicken eines Items wird die Checkbox aktiviert oder deaktiviert.
+        Activate the checkbox of the selected item
 
     dragEnterEvent(event: QDragEnterEvent):
-        Überprüfung ob gedroppte Daten dem Format Urls entsprechen.
-        Dem Widget wird hierdurch gesagt welche Daten es bekommt.
+        Check if dropped data has Urls
 
     dragMoveEvent(event: QDragMoveEvent):
-        Dem Widget wird gesagt, dass das Drag Event im gange ist.
-        Wird außerdem benötigt, dass die Funktion "dropEvent" aufgerufen wird.
+        Drag Event is active
 
     dropEvent(event: QDropEvent):
-        Auswerten der gedroppten Daten und diese ins richtige Format konvertieren.
-        Falls eine Verknüpfung gedroppt wurde, Fehlermeldung generieren.
-        Items in die QWidgetListe einfügen und in die self.paths Liste.
+        Add the dropped files to the QListWidget
 
     check_typ():
-        überprüfung ob url ein Ordner oder eine Datei ist und entsprechendes Icon setzen.
+        Returns the icons for the dropped data
 
     get_paths():
-        Gibt die Pfade zurück.
+        Returns the paths
     """
-
     def __init__(self, parent):
         super(DragDrop, self).__init__(parent)
         self.setAcceptDrops(True)
@@ -44,61 +39,46 @@ class DragDrop(QListWidget):
 
     @staticmethod
     def set_check_state(item):
-        """Beim anklicken eines Items wird die Checkbox aktiviert oder deaktiviert."""
+        """Activate the checkbox of the selected item"""
         if item.checkState() != Qt.CheckState.Checked:
             item.setCheckState(Qt.CheckState.Checked)
         else:
             item.setCheckState(Qt.CheckState.Unchecked)
 
     def dragEnterEvent(self, event: QDragEnterEvent) -> None:
-        """
-        Überprüfung ob gedroppte Daten dem Format Urls entsprechen.
-        Dem Widget wird hierdurch gesagt welche Daten es bekommt.
-        """
+        """Check if dropped data has Urls"""
         if event.mimeData().hasUrls():
             event.accept()
         else:
             event.ignore()
 
     def dragMoveEvent(self, event: QDragMoveEvent) -> None:
-        """
-        Dem Widget wird gesagt, dass das Drag Event im gange ist.
-        Wird außerdem benötigt, dass die Funktion "dropEvent" aufgerufen wird.
-        """
+        """Drag Event is active"""
         if event.mimeData().hasUrls():
             event.accept()
         else:
             event.ignore()
 
     def dropEvent(self, event: QDropEvent) -> None:
-        """
-        Auswerten der gedroppten Daten und diese ins richtige Format konvertieren.
-        Falls eine Verknüpfung gedroppt wurde, Fehlermeldung generieren.
-        Items in die QWidgetListe einfügen und in die self.paths Liste.
-        """
-        if event.mimeData().hasUrls():
-            event.accept()
-            for url in event.mimeData().urls():
-                if url.toLocalFile() not in self.paths and not url.toLocalFile().endswith(
-                        ".lnk") and os.path.exists(url.toLocalFile()):
-                    item = QListWidgetItem(url.toLocalFile())
-                    item.setCheckState(Qt.CheckState.Unchecked)
-                    item.setIcon(QIcon(self.check_typ(url.toLocalFile())))
-                    self.addItem(item)
-                    self.paths.append(url.toLocalFile())
-                else:
-                    # self.messages(9, "")
-                    event.ignore()
-        else:
-            event.ignore()
+        """Add the dropped files to the QListWidget"""
+        for url in event.mimeData().urls():
+            if url.toLocalFile() not in self.paths and not url.toLocalFile().endswith(
+                    ".lnk") and os.path.exists(url.toLocalFile()):
+                item = QListWidgetItem(url.toLocalFile())
+                item.setCheckState(Qt.CheckState.Unchecked)
+                item.setIcon(QIcon(self.check_typ(url.toLocalFile())))
+                self.addItem(item)
+                self.paths.append(url.toLocalFile())
+            else:
+                event.ignore()
 
     @staticmethod
     def check_typ(url: str) -> str:
-        """überprüfung ob url ein Ordner oder eine Datei ist und entsprechendes Icon setzen."""
+        """Returns the icons for the dropped data"""
         if os.path.isdir(url):
-            return r"icon\folder.ico"
-        return r"icon\file.ico"
+            return r"icons\folder.ico"
+        return r"icons\file.ico"
 
     def get_paths(self) -> list:
-        """Gibt die Pfade zurück."""
+        """Returns the paths"""
         return self.paths
