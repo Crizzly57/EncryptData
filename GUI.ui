@@ -159,13 +159,133 @@ QListWidget:Item{
 	border-radius: 10px;
 }
 QListWidget:Item:Selected{
-	background-color: rgba(13, 12, 23, 150);
+	background-color: rgba(13, 12, 23, 100);
 }
 QListWidget:Item:Hover{
-	background-color: rgba(35, 31, 60, 100);
+	background-color: rgba(35, 31, 60, 150);
 }
 
-</string>
+/* VERTICAL SCROLLBAR */
+ QScrollBar:vertical {
+	border: none;
+    background: rgb(45, 45, 68);
+    width: 10px;
+    margin: 15px 0 15px 0;
+	border-radius: 0px;
+ }
+
+/* HANDLE BAR VERTICAL */
+QScrollBar::handle:vertical {	
+	background-color: rgb(67, 67, 67);
+	min-height: 30px;
+	border-radius: 5px;
+}
+QScrollBar::handle:vertical:hover{	
+	background-color: rgba(67, 67, 67, 150);
+}
+QScrollBar::handle:vertical:pressed {	
+	background-color: rgba(67, 67, 67, 100);
+}
+
+/* BTN TOP - SCROLLBAR */
+QScrollBar::sub-line:vertical {
+	border: none;
+	background-color: rgb(67, 67, 67);
+	height: 15px;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+	subcontrol-position: top;
+	subcontrol-origin: margin;
+}
+QScrollBar::sub-line:vertical:hover {	
+	background-color: rgba(67, 67, 67, 150);
+}
+QScrollBar::sub-line:vertical:pressed {	
+	background-color: rgba(67, 67, 67, 150);
+}
+
+/* BTN BOTTOM - SCROLLBAR */
+QScrollBar::add-line:vertical {
+	border: none;
+	background-color: rgb(67, 67, 67);
+	height: 15px;
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+	subcontrol-position: bottom;
+	subcontrol-origin: margin;
+}
+QScrollBar::add-line:vertical:hover {	
+	background-color: rgba(67, 67, 67, 150);
+}
+QScrollBar::add-line:vertical:pressed {	
+	background-color: rgba(67, 67, 67, 100);
+}
+
+/* RESET ARROW */
+QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical {
+	background: none;
+}
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+	background: none;
+}
+
+/* HORIZONTAL SCROLLBAR*/
+QScrollBar:horizontal {
+	border: none;
+	background: rgb(13, 12, 23);
+    height: 10px;
+    margin: 0 15px 0 15px;
+	border-radius: 0px;   
+}
+
+/*  HANDLE BAR HORIZONTAL */
+QScrollBar::handle:horizontal{
+	background-color: rgb(67, 67, 67);
+	min-width: 30px;
+	border-radius: 5px;
+}
+QScrollBar::handle:horizontal:hover{
+	background-color: rgba(67, 67, 67, 150);
+}
+QScrollBar::handle:horizontal:pressed{
+	background-color: rgba(67, 67, 67, 100);
+}
+
+/* BTN RIGHT - SCROLLBAR */
+QScrollBar::add-line:horizontal{
+    border: none;
+	background-color: rgb(67, 67, 67);
+	width: 15px;
+	border-top-right-radius: 5px;
+	border-bottom-right-radius: 5px;
+	subcontrol-position: right;
+	subcontrol-origin: margin;
+}
+
+/* BTN LEFT - SCROLLBAR */
+QScrollBar::sub-line:horizontal{
+    border: none;
+	background-color: rgb(67, 67, 67);
+	width: 15px;
+	border-top-left-radius: 5px;
+	border-bottom-left-radius: 5px;
+	subcontrol-position: left;
+	subcontrol-origin: margin;
+}
+QScrollBar::add-line:horizontal:hover, QScrollBar::sub-line:horizontal:hover{
+	background-color: rgba(67, 67, 67, 150);
+}
+QScrollBar::add-line:horizontal:pressed, QScrollBar::sub-line:horizontal:pressed{
+	background-color: rgba(67, 67, 67, 100);
+}
+
+/* RESET ARROW */
+QScrollBar::up-arrow:horizontal, QScrollBar::down-arrow:horizontal{
+	background: none;
+}
+QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal{
+	background: none;
+}</string>
       </property>
       <property name="frameShape">
        <enum>QFrame::NoFrame</enum>
@@ -2002,6 +2122,12 @@ QListWidget:Item:Hover{
                   <property name="lineWidth">
                    <number>0</number>
                   </property>
+                  <property name="verticalScrollBarPolicy">
+                   <enum>Qt::ScrollBarAsNeeded</enum>
+                  </property>
+                  <property name="horizontalScrollBarPolicy">
+                   <enum>Qt::ScrollBarAsNeeded</enum>
+                  </property>
                   <property name="alternatingRowColors">
                    <bool>false</bool>
                   </property>
@@ -2010,6 +2136,15 @@ QListWidget:Item:Hover{
                   </property>
                   <property name="selectionBehavior">
                    <enum>QAbstractItemView::SelectItems</enum>
+                  </property>
+                  <property name="verticalScrollMode">
+                   <enum>QAbstractItemView::ScrollPerItem</enum>
+                  </property>
+                  <property name="horizontalScrollMode">
+                   <enum>QAbstractItemView::ScrollPerItem</enum>
+                  </property>
+                  <property name="sortingEnabled">
+                   <bool>true</bool>
                   </property>
                  </widget>
                 </item>
@@ -4736,6 +4871,9 @@ QListWidget:Item:Hover{
                </property>
                <property name="horizontalScrollBarPolicy">
                 <enum>Qt::ScrollBarAsNeeded</enum>
+               </property>
+               <property name="lineWrapMode">
+                <enum>QTextEdit::NoWrap</enum>
                </property>
                <property name="textInteractionFlags">
                 <set>Qt::LinksAccessibleByKeyboard|Qt::LinksAccessibleByMouse|Qt::TextBrowserInteraction|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
