@@ -2,30 +2,33 @@
 <ui version="4.0">
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>736</width>
-    <height>554</height>
+    <width>600</width>
+    <height>580</height>
    </rect>
   </property>
   <property name="sizePolicy">
-   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
   </property>
   <property name="minimumSize">
    <size>
-    <width>500</width>
-    <height>470</height>
+    <width>600</width>
+    <height>580</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>16777215</width>
-    <height>16777215</height>
+    <width>600</width>
+    <height>580</height>
    </size>
   </property>
   <property name="baseSize">
@@ -36,9 +39,11 @@
   </property>
   <property name="font">
    <font>
-    <family>Arial</family>
     <pointsize>10</pointsize>
    </font>
+  </property>
+  <property name="acceptDrops">
+   <bool>true</bool>
   </property>
   <property name="windowTitle">
    <string/>
@@ -54,26 +59,22 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>260</y>
+      <y>270</y>
       <width>325</width>
       <height>91</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout_2">
-     <item row="0" column="1">
-      <widget class="QLabel" name="password_label">
-       <property name="text">
-        <string>Passwort:</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="2">
       <widget class="QLineEdit" name="pass_input">
        <property name="enabled">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
        <property name="contextMenuPolicy">
         <enum>Qt::DefaultContextMenu</enum>
+       </property>
+       <property name="toolTip">
+        <string>Passworteingabe</string>
        </property>
        <property name="styleSheet">
         <string notr="true"/>
@@ -90,31 +91,19 @@
       </widget>
      </item>
      <item row="1" column="2">
-      <widget class="QPushButton" name="ok_button">
+      <widget class="QPushButton" name="start_button">
        <property name="enabled">
         <bool>false</bool>
        </property>
        <property name="text">
-        <string>Ok</string>
+        <string>Start</string>
        </property>
       </widget>
      </item>
-     <item row="1" column="0">
-      <widget class="QRadioButton" name="enc">
-       <property name="enabled">
-        <bool>true</bool>
-       </property>
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
+     <item row="0" column="1">
+      <widget class="QLabel" name="password_label">
        <property name="text">
-        <string>verschlüsseln</string>
-       </property>
-       <property name="checkable">
-        <bool>true</bool>
+        <string>Passwort:</string>
        </property>
       </widget>
      </item>
@@ -140,41 +129,21 @@
        </property>
       </widget>
      </item>
-    </layout>
-   </widget>
-   <widget class="QWidget" name="gridLayoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>200</y>
-      <width>421</width>
-      <height>56</height>
-     </rect>
-    </property>
-    <layout class="QGridLayout" name="gridLayout">
-     <item row="0" column="1">
-      <widget class="QPushButton" name="files">
+     <item row="1" column="0">
+      <widget class="QRadioButton" name="enc">
        <property name="enabled">
         <bool>true</bool>
        </property>
-       <property name="text">
-        <string>Dateien öffnen</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QPushButton" name="folder">
-       <property name="enabled">
-        <bool>true</bool>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
        </property>
        <property name="text">
-        <string>Ordner öffnen</string>
+        <string>verschlüsseln</string>
        </property>
-      </widget>
-     </item>
-     <item row="0" column="0" rowspan="2">
-      <widget class="QLineEdit" name="path">
-       <property name="readOnly">
+       <property name="checkable">
         <bool>true</bool>
        </property>
       </widget>
@@ -185,14 +154,13 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>440</y>
+      <y>520</y>
       <width>91</width>
       <height>16</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <family>Arial</family>
       <pointsize>8</pointsize>
      </font>
     </property>
@@ -200,47 +168,13 @@
      <string>© Sven Kleinhans</string>
     </property>
    </widget>
-   <widget class="QLabel" name="Info">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>10</y>
-      <width>388</width>
-      <height>197</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Times New Roman</family>
-      <pointsize>12</pointsize>
-     </font>
-    </property>
-    <property name="autoFillBackground">
-     <bool>false</bool>
-    </property>
-    <property name="text">
-     <string>1. Datei oder Verzeichnis auswählen
-2. Wählen zwischen entschlüsseln und verschlüsseln
-3. Passwort eingeben
-
-Ein sicheres Passwort muss mindestens: 
-
-     - 10 Zeichen beinhalten 
-     - einen Groß- und Kleinbuchstaben beinhalten 
-     - Ein '#', '%', '@' oder '$' beinhalten 
-</string>
-    </property>
-    <property name="textFormat">
-     <enum>Qt::AutoText</enum>
-    </property>
-   </widget>
    <widget class="QTextBrowser" name="message">
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>360</y>
-      <width>421</width>
-      <height>81</height>
+      <y>370</y>
+      <width>561</width>
+      <height>151</height>
      </rect>
     </property>
     <property name="palette">
@@ -282,11 +216,15 @@ Ein sicheres Passwort muss mindestens:
     </property>
     <property name="font">
      <font>
-      <family>Arial</family>
       <pointsize>8</pointsize>
-      <weight>75</weight>
       <bold>true</bold>
      </font>
+    </property>
+    <property name="acceptDrops">
+     <bool>false</bool>
+    </property>
+    <property name="toolTip">
+     <string>Anzeige der aktuellen Statusmeldungen</string>
     </property>
     <property name="frameShape">
      <enum>QFrame::WinPanel</enum>
@@ -297,12 +235,21 @@ Ein sicheres Passwort muss mindestens:
     <property name="lineWidth">
      <number>1</number>
     </property>
+    <property name="verticalScrollBarPolicy">
+     <enum>Qt::ScrollBarAsNeeded</enum>
+    </property>
+    <property name="horizontalScrollBarPolicy">
+     <enum>Qt::ScrollBarAsNeeded</enum>
+    </property>
+    <property name="textInteractionFlags">
+     <set>Qt::LinksAccessibleByKeyboard|Qt::LinksAccessibleByMouse|Qt::TextBrowserInteraction|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
+    </property>
    </widget>
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
-      <x>410</x>
-      <y>440</y>
+      <x>560</x>
+      <y>520</y>
       <width>31</width>
       <height>16</height>
      </rect>
@@ -313,19 +260,51 @@ Ein sicheres Passwort muss mindestens:
      </font>
     </property>
     <property name="text">
-     <string>V1.1</string>
+     <string>V1.2</string>
     </property>
    </widget>
-  </widget>
-  <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>736</width>
-     <height>21</height>
-    </rect>
-   </property>
+   <widget class="QCheckBox" name="delete_files">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>240</y>
+      <width>251</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Alte Dateien nach dem Vorgang löschen</string>
+    </property>
+    <property name="checked">
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="remove_all">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>210</y>
+      <width>141</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>alles löschen</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="remove_selected">
+    <property name="geometry">
+     <rect>
+      <x>162</x>
+      <y>210</y>
+      <width>141</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>ausgewählte löschen</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>

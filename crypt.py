@@ -3,6 +3,7 @@ Dieses Modul beinhaltet alle Algorithmen und Funktionen um Dateien und PDF Dokum
 zu verschlüsseln oder zu entschlüsseln.
 Benutzt werden hier die Module Cryptography und PikePDF.
 """
+
 import os
 import base64
 from cryptography.fernet import Fernet, InvalidToken
@@ -52,17 +53,12 @@ def encrypt(file: str, password: str) -> int:
     """
     fernet = Fernet(gen_key(password.encode()))
     if not check_encryption(file):
-        with open(file, "rb") as input_file:
+        with open(file, "rb") as input_file, open(make_encrypted_file(file), "wb") as out:
             file_data = input_file.read()
             encrypted_data = fernet.encrypt(file_data)
-        with open(make_encrypted_file(file), "wb") as out:
             out.write(encrypted_data)
-        # Datei erfolgreich verschlüsselt
-        num = 8
-    else:
-        # Datei in "xy" ist schon verschlüsselt
-        num = 4
-    return num
+        return 8    # Datei erfolgreich verschlüsselt
+    return 4    # Datei in "xy" ist schon verschlüsselt
 
 
 def decrypt(file: str, password: str) -> int:
@@ -73,21 +69,15 @@ def decrypt(file: str, password: str) -> int:
     """
     fernet = Fernet(gen_key(password.encode()))
     if check_encryption(file):
-        with open(file, "rb") as input_file:
+        with open(file, "rb") as input_file, open(make_decrypted_file(file), 'wb') as out:
             encrypted_data = input_file.read()
             try:
                 decrypted_data = fernet.decrypt(encrypted_data)
-                with open(make_decrypted_file(file), 'wb') as out:
-                    out.write(decrypted_data)
-                # Datei erfolgreich entschlüsselt
-                num = 7
+                out.write(decrypted_data)
+                return 7    # Datei erfolgreich entschlüsselt
             except InvalidToken:
-                # Flasches Passwort für Datei in "xy"
-                num = 3
-    else:
-        # Datei in "xy" ist nicht verschlüsselt
-        num = 5
-    return num
+                return 3    # Flasches Passwort für Datei in "xy"
+    return 5    # Datei in "xy" ist nicht verschlüsselt
 
 
 def encrypt_pdf(file, password: str) -> int:
@@ -100,13 +90,9 @@ def encrypt_pdf(file, password: str) -> int:
     try:
         with Pdf.open(os.path.normpath(file)) as input_file:
             input_file.save(out_path, encryption=Encryption(owner=password, user=password))
-        os.remove(file)
-        # Datei erfolgreich verschlüsselt
-        num = 8
+        return 8    # Datei erfolgreich verschlüsselt
     except PasswordError:
-        # Datei in "xy" ist schon verschlüsselt
-        num = 4
-    return num
+        return 4    # Datei in "xy" ist schon verschlüsselt
 
 
 def decrypt_pdf(file, password: str) -> int:
@@ -121,13 +107,7 @@ def decrypt_pdf(file, password: str) -> int:
         with Pdf.open(os.path.normpath(file), password) as input_file:
             if input_file.is_encrypted:
                 input_file.save(out_path)
-                os.remove(file)
-                # Datei erfolgreich entschlüsselt
-                num = 7
-            else:
-                # Datei ist nicht verschlüsselt
-                num = 5
+                return 7    # Datei erfolgreich entschlüsselt
+            return 5    # Datei ist nicht verschlüsselt
     except PasswordError:
-        # Falsches Passwort
-        num = 3
-    return num
+        return 3    # Falsches Passwort
