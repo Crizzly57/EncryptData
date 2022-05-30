@@ -1,10 +1,20 @@
+"""
+ToDo:
+    - Drag & Drop
+    - neue Class welche ein Drag n Drop Widget erstellt
+    - Multiprocessing
+    - CSS Styling
+    - dash border
+"""
+
+# Imports
 import os
 from time import time
 from psutil import cpu_count
-from PyQt5.uic import loadUi
-from PyQt5.QtWidgets import QFileDialog, QApplication, QMainWindow, QDialog
-from PyQt5.QtCore import QDir
-from PyQt5.QtGui import QIcon
+from PyQt6.uic import loadUi
+from PyQt6.QtWidgets import *
+from PyQt6.QtCore import QDir
+from PyQt6 import QtGui
 import math
 import multiprocessing as mp
 from multiprocessing import freeze_support
@@ -17,59 +27,71 @@ from pikepdf import Pdf, Encryption, PasswordError
 
 
 class Ui(QMainWindow, QDialog):
-    # Initializerien
+    # Initializieren
     def __init__(self):
         super(Ui, self).__init__()
         self.file_list = []
         self.password = ""
         self.enc_or_dec = ""
         self.setup_ui()
-        self.start()
-
-    # Anzeigen der UI
-    def setup_ui(self):
-        loadUi("GUI.ui", self)
-        self.setWindowTitle("Daten schützen")
-        self.setWindowIcon(QIcon("icon.png"))
-        self.setFixedWidth(500)
-        self.setFixedHeight(480)
-        self.show()
-
-    # Aufruf der jeweiligen action, ob ganzer Ordner oder einzelne Datei / Dateien ausgewählt werden sollen
-    def start(self):
         self.files.clicked.connect(self.browse_files)
         self.folder.clicked.connect(self.browse_folder)
         self.pass_input.textChanged.connect(self.enable_ok_button)
         self.connect_to_get_password()
 
+    # Anzeigen der UI
+    def setup_ui(self):
+        loadUi("GUI.ui", self)
+        self.setWindowTitle("Daten schützen")
+        self.setWindowIcon(QtGui.QIcon("icon.png"))
+        self.setFixedWidth(500)
+        self.setFixedHeight(480)
+        self.statusBar()
+
+        # Erstellen einer Exit Action
+        exit_button = QtGui.QAction(QtGui.QIcon('exit.png'), '&Exit', self)
+        exit_button.setShortcut('Ctrl+Q')
+        exit_button.setStatusTip('Beende Programm')
+        exit_button.triggered.connect(app.quit)
+        self.pass_input.setToolTip('Passwort Eingabe')
+
+        # Erstellen einer Menübar
+        mainmenu = self.menuBar()
+        filemenu = mainmenu.addMenu('&Datei')
+        helpmenu = mainmenu.addMenu('&Hilfe')
+        filemenu.addAction(exit_button)
+        self.show()
+
     # Aufruf des Explorer Dialogs für einzelne oder mehrere Dateien
     def browse_files(self):
         self.file_list = QFileDialog.getOpenFileNames(self, "Dateien öffnen", QDir.currentPath())
-        # clear des Ausgabefeldes
-        self.message.clear()
-        self.pass_input.setEnabled(True)
-        # tupel aus Liste und String auflösen
-        self.file_list = self.file_list[0]
-        # Pfade formatieren
-        for i, path in enumerate(self.file_list):
-            self.file_list[i] = os.path.realpath(path)
-        # Überprüfung ob nur eine Datei ausgewählt wurde, dann exakt diesen Pfad angeben
-        if len(self.file_list) == 1:
-            self.path.setText(os.path.dirname(self.file_list[0]) + "\\" + os.path.basename(self.file_list[0]))
-        else:
-            # Ordnerverzeichnis aller Dateien setzen
-            self.path.setText(os.path.dirname(self.file_list[0]) + "\\")
+        if not self.file_list == ([], ''):
+            # clear des Ausgabefeldes
+            self.message.clear()
+            self.pass_input.setEnabled(True)
+            # tupel aus Liste und String auflösen
+            self.file_list = self.file_list[0]
+            # Pfade formatieren
+            for i, path in enumerate(self.file_list):
+                self.file_list[i] = os.path.realpath(path)
+            # Überprüfung ob nur eine Datei ausgewählt wurde, dann exakt diesen Pfad angeben
+            if len(self.file_list) == 1:
+                self.path.setText(os.path.dirname(self.file_list[0]) + "\\" + os.path.basename(self.file_list[0]))
+            else:
+                # Ordnerverzeichnis aller Dateien setzen
+                self.path.setText(os.path.dirname(self.file_list[0]) + "\\")
 
     # Aufruf des Explorer Dialogs für ganze Ordner
     def browse_folder(self):
         path = QFileDialog.getExistingDirectory(self, "Ordner öffnen", QDir.currentPath())
-        # clear des Ausgabefeldes
-        self.message.clear()
-        self.pass_input.setEnabled(True)
-        # Pfad formatieren
-        path = os.path.realpath(path)
-        self.path.setText(path)
-        self.open_directory(path)
+        if path:
+            # clear des Ausgabefeldes
+            self.message.clear()
+            self.pass_input.setEnabled(True)
+            # Pfad formatieren
+            path = os.path.realpath(path)
+            self.path.setText(path)
+            self.open_directory(path)
 
     # Hilfsfunktion für das aktivieren des O.K.-Buttons
     def enable_ok_button(self):
@@ -246,8 +268,6 @@ def make_decrypted_file(path: str):
     name = os.path.basename(path)
     # '_encrypted' entfernen
     new_string = name.replace("_encrypted", "")
-    # löschen der alten Datei
-    os.remove(path)
     return os.path.dirname(path) + "\\" + new_string
 
 
@@ -300,13 +320,13 @@ def decrypt(file: str, password: str):
 
 
 # Verschlüsseln einer PDF
-def encrypt_pdf(file: str, password: str):
+def encrypt_pdf(file, password: str):
     out_path = make_encrypted_file(file)
     try:
         with Pdf.open(os.path.normpath(file)) as input_file:
             input_file.save(out_path, encryption=Encryption(owner=password, user=password))
             # löschen der alten Datei
-            os.remove(input_file)
+            os.remove(file)
     except PasswordError:
         # Datei in "xy" ist schon verschlüsselt
         return 4
@@ -314,14 +334,14 @@ def encrypt_pdf(file: str, password: str):
 
 
 # Entschlüsseln einer PDF
-def decrypt_pdf(file: str, password: str):
+def decrypt_pdf(file, password: str):
     out_path = make_decrypted_file(file)
     try:
         with Pdf.open(os.path.normpath(file), password) as input_file:
             if input_file.is_encrypted:
                 input_file.save(out_path)
                 # löschen der alten Datei
-                os.remove(input_file)
+                os.remove(file)
             else:
                 # Datei ist nicht verschlüsselt
                 return 5
@@ -329,6 +349,7 @@ def decrypt_pdf(file: str, password: str):
         # Falsches Passwort
         return 3
     input_file.close()
+
 
 # Modul: PyPDF2
 """ 
@@ -372,5 +393,13 @@ def decrypt_pdf(file, password):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
+
+    # Style setzen und Stylesheet laden
+    app.setStyle('Fusion')
+    file = open("Stylesheet.css", "r")
+    stylesheet = file.read()
+    file.close()
+    app.setStyleSheet(stylesheet)
+
     window = Ui()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())
