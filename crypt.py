@@ -53,12 +53,17 @@ def encrypt(file: str, password: str) -> int:
     """
     fernet = Fernet(gen_key(password.encode()))
     if not check_encryption(file):
-        with open(file, "rb") as input_file, open(make_encrypted_file(file), "wb") as out:
-            file_data = input_file.read()
-            encrypted_data = fernet.encrypt(file_data)
-            out.write(encrypted_data)
-        return 8    # Datei erfolgreich verschlüsselt
-    return 4    # Datei in "xy" ist schon verschlüsselt
+        try:
+            with open(file, "rb") as input_file, open(make_encrypted_file(file), "wb") as out:
+                file_data = input_file.read()
+                encrypted_data = fernet.encrypt(file_data)
+                out.write(encrypted_data)
+            return 4    # Datei erfolgreich verschlüsselt
+        except FileNotFoundError:
+            return 101   # Datei existiert nicht
+        except PermissionError:
+            return 108  # Fehlende Berechtigung
+    return 104    # Datei in "xy" ist schon verschlüsselt
 
 
 def decrypt(file: str, password: str) -> int:
@@ -69,15 +74,19 @@ def decrypt(file: str, password: str) -> int:
     """
     fernet = Fernet(gen_key(password.encode()))
     if check_encryption(file):
-        with open(file, "rb") as input_file, open(make_decrypted_file(file), 'wb') as out:
-            encrypted_data = input_file.read()
-            try:
+        try:
+            with open(file, "rb") as input_file, open(make_decrypted_file(file), 'wb') as out:
+                encrypted_data = input_file.read()
                 decrypted_data = fernet.decrypt(encrypted_data)
                 out.write(decrypted_data)
-                return 7    # Datei erfolgreich entschlüsselt
-            except InvalidToken:
-                return 3    # Flasches Passwort für Datei in "xy"
-    return 5    # Datei in "xy" ist nicht verschlüsselt
+                return 3    # Datei erfolgreich entschlüsselt
+        except InvalidToken:
+            return 103    # Flasches Passwort für Datei in "xy"
+        except FileNotFoundError:
+            return 101   # Datei existiert nicht
+        except PermissionError:
+            return 108  # Fehlende Berechtigung
+    return 105    # Datei in "xy" ist nicht verschlüsselt
 
 
 def encrypt_pdf(file, password: str) -> int:
@@ -90,9 +99,13 @@ def encrypt_pdf(file, password: str) -> int:
     try:
         with Pdf.open(os.path.normpath(file)) as input_file:
             input_file.save(out_path, encryption=Encryption(owner=password, user=password))
-        return 8    # Datei erfolgreich verschlüsselt
+        return 4    # Datei erfolgreich verschlüsselt
     except PasswordError:
-        return 4    # Datei in "xy" ist schon verschlüsselt
+        return 104    # Datei in "xy" ist schon verschlüsselt
+    except FileNotFoundError:
+        return 101   # Datei existiert nicht
+    except PermissionError:
+        return 108   # Fehlende Berechtigung
 
 
 def decrypt_pdf(file, password: str) -> int:
@@ -107,7 +120,11 @@ def decrypt_pdf(file, password: str) -> int:
         with Pdf.open(os.path.normpath(file), password) as input_file:
             if input_file.is_encrypted:
                 input_file.save(out_path)
-                return 7    # Datei erfolgreich entschlüsselt
-            return 5    # Datei ist nicht verschlüsselt
+                return 3    # Datei erfolgreich entschlüsselt
+            return 105    # Datei ist nicht verschlüsselt
     except PasswordError:
-        return 3    # Falsches Passwort
+        return 103    # Falsches Passwort
+    except FileNotFoundError:
+        return 101   # Datei existiert nicht
+    except PermissionError:
+        return 108   # Fehlende Berechtigung

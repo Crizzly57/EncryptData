@@ -277,11 +277,12 @@ class Main:
                     num = crypt.encrypt(file, self.password)
                 else:
                     num = crypt.decrypt(file, self.password)
-                if self.ui.delete_files.isChecked():
+                if self.ui.delete_files.isChecked() and num not in (101, 102):
                     os.remove(file)
                 self.messages(num, file)
                 self.ui.progress_bar.setValue(parts * (i + 1))
-            self.messages(6, '')  # Setzen der Statusmeldung "Fertig"
+            self.ui.progress_bar.setValue(100)
+            self.messages(2, '')  # Setzen der Statusmeldung "Fertig"
             self.clear_all()
 
     def get_inputs(self) -> None:
@@ -291,7 +292,7 @@ class Main:
             self.sort_input(paths)
             self.get_password()
         else:
-            self.messages(10, "")
+            self.messages(106, "")  # Keine Dateien ausgewählt
 
     def sort_input(self, input_list: list) -> None:
         """
@@ -350,12 +351,12 @@ class Main:
         """Einlesen und überprüfung des Passworts, sowie generierung von Fehlermeldung."""
         self.password = self.ui.pass_input.text()
         if not self.check_password(self.password):
-            self.messages(0, '')  # Passwort entspricht nicht den Kriterien
+            self.messages(100, '')  # Passwort entspricht nicht den Kriterien
             self.file_list = []
             self.password = ""
             self.ui.pass_input.clear()
         elif not self.file_list:
-            self.messages(9, '')  # keine Dateien ausgewählt
+            self.messages(106, '')  # keine Dateien ausgewählt
         else:
             self.messages(1, '')  # Passwort gültig
 
@@ -384,41 +385,50 @@ class Main:
 
     def messages(self, num: int, file: str) -> None:
         """Erzeugen der auszugebenden Nachricht. Auf Basis der Variablen 'num' und 'file'."""
+        file = os.path.basename(file)
         colour = ""
         msg = ""
-        if num == 0:
-            msg = "Passwort entspricht nicht den Kriterien!"
-            colour = "red"
-        elif num == 1:
+        if num == 1:
             msg = "Passwort entspricht den Kriterien!"
             colour = "green"
         elif num == 2:
-            msg = "verschlüsseln oder entschlüsseln auswählen!"
-            colour = "red"
-        elif num == 3:
-            msg = f"Passwort für Datei {os.path.basename(file)} ist falsch!"
-            colour = "red"
-        elif num == 4:
-            msg = f"Datei {os.path.basename(file)} ist bereits verschlüsselt!"
-            colour = "red"
-        elif num == 5:
-            msg = f"Datei {os.path.basename(file)} ist nicht verschlüsselt!"
-            colour = "red"
-        elif num == 6:
             msg = "\nVorgang abgeschlossen!"
             colour = "green"
-        elif num == 7:
-            msg = f"Datei {os.path.basename(file)} erfolgreich entschlüsselt!"
+        elif num == 3:
+            msg = f"Datei {file} erfolgreich entschlüsselt!"
             colour = "green"
-        elif num == 8:
-            msg = f"Datei {os.path.basename(file)} erfolgreich verschlüsselt!"
+        elif num == 4:
+            msg = f"Datei {file} erfolgreich verschlüsselt!"
             colour = "green"
-        elif num == 9:
-            msg = "Pfadreferenz ungültig!"
+        elif num == 100:
+            msg = "Passwort entspricht nicht den Kriterien!"
             colour = "red"
-        elif num == 10:
+        elif num == 101:
+            msg = f"Die Datei {file} existiert nicht!"
+            colour = "red"
+        elif num == 102:
+            msg = "verschlüsseln oder entschlüsseln auswählen!"
+            colour = "red"
+        elif num == 103:
+            msg = f"Passwort für Datei {file} ist falsch!"
+            colour = "red"
+        elif num == 104:
+            msg = f"Datei {file} ist bereits verschlüsselt!"
+            colour = "red"
+        elif num == 105:
+            msg = f"Datei {file} ist nicht verschlüsselt!"
+            colour = "red"
+        elif num == 106:
             msg = "Keine Dateien oder Ordner ausgewählt!"
             colour = "red"
+        elif num == 107:
+            msg = "Pfadreferenz ungültig!"
+            colour = "red"
+        elif num == 108:
+            msg = f"Fehlende Berechtigung für die Datei {file}!"
+            colour = "red"
+
+
         self.change_colour(colour, msg)
 
     def change_colour(self, colour: str, msg: str) -> None:
