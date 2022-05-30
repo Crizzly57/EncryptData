@@ -7,17 +7,19 @@ Jegliche funktionen oder anpassungen müssen die die Datei "custom_classes.py" g
 ToDo:
     - Multiprocessing
     - In der UI links einen Slider mit dem Menü, zum ein und ausblenden
-    - Design/Farbwechsel einbauen (alles von Hand coden)
+    - Design/Farbwechsel einbauen
+    - Auflösung passt nicht auf 4k Display zu 1080p?
 """
-
 import crypt
 import sys
 import os
 from custom_classes import DragDrop
 from PyQt5.uic import loadUi
 from PyQt5.QtWidgets import *
-from PyQt5.QtCore import Qt, QRect, QPropertyAnimation
+from PyQt5.QtCore import Qt, QPropertyAnimation, QAbstractAnimation, QEasingCurve
 from PyQt5.QtGui import QIcon
+# Beinhaltet die Icons und sonstige resourcen
+import resources
 
 
 GLOBAL_STATE = 0
@@ -46,6 +48,7 @@ class Ui(QMainWindow):
         self.file_list = []
         self.password = ""
 
+        # Objekte in der UI finden
         self.pass_input = self.findChild(QLineEdit, 'pass_input')
         self.remove_all = self.findChild(QPushButton, 'remove_all')
         self.close = self.findChild(QPushButton, 'close')
@@ -61,9 +64,11 @@ class Ui(QMainWindow):
         self.enc = self.findChild(QRadioButton, 'enc')
         self.dec = self.findChild(QRadioButton, 'dec')
         self.message = self.findChild(QTextBrowser, 'message')
-        self.toolbox = self.findChild(QToolBox, 'toolbox')
         self.drop_data = self.findChild(DragDrop, 'drop_data')
         self.delete_files = self.findChild(QCheckBox, 'delete_files')
+        self.side_menu = self.findChild(QFrame, 'side_menu')
+        # Objekt für die Animation des Sidemenu
+        self.anim = QPropertyAnimation(self.side_menu, b'maximumWidth')
 
         self.setup_ui()
 
@@ -78,13 +83,11 @@ class Ui(QMainWindow):
                 event.accept()
             else:
                 event.ignore()
-
         self.header.mouseMoveEvent = move_window
 
         def window_pressed(event):
             """Wenn das Fenster am Header angedrückt wird, aktuelle Position zwischenspeichern."""
             self.drag_pos = event.globalPos()
-
         self.header.mousePressEvent = window_pressed
 
     def setup_ui(self) -> None:
@@ -100,7 +103,7 @@ class Ui(QMainWindow):
         self.remove_selected.clicked.connect(self.remove_selected_items)
         self.pass_input.returnPressed.connect(self.worker)
         self.start_button.clicked.connect(self.worker)
-        self.slider.clicked.connect(self.animate_toolbox)
+        self.slider.clicked.connect(self.animate_sidemenu)
 
         self.setWindowIcon(QIcon(r"icon\icon.png"))
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
@@ -111,7 +114,7 @@ class Ui(QMainWindow):
         self.minimize.clicked.connect(self.showMinimized)
         self.maximize.clicked.connect(self.maximize_restore)
 
-    def maximize_restore(self):
+    def maximize_restore(self) -> None:
         global GLOBAL_STATE
         if GLOBAL_STATE == 1:
             self.showNormal()
@@ -124,12 +127,21 @@ class Ui(QMainWindow):
             self.main_layout.setContentsMargins(0, 0, 0, 0)
             self.main_frame.setStyleSheet("background-color: rgb(13, 12, 23);\nborder-radius: 0px;")
 
-    def animate_toolbox(self):
-        anim = QPropertyAnimation(self.toolBox, b"geometry")
-        anim.setDuration(500)
-        anim.setStartValue(QRect(0, 52, 200, 671))
-        anim.setEndValue(QRect(0, 52, 50, 671))
-        anim.start()
+    def animate_sidemenu(self) -> None:
+        if self.side_menu.frameGeometry().width() > 60:
+            # Sidemenu schließen
+            start_value = self.side_menu.frameGeometry().width()
+            end_value = 60
+        else:
+            # Sidemenu öffnen
+            start_value = self.side_menu.frameGeometry().width()
+            end_value = 200
+        self.anim.DeletionPolicy(QAbstractAnimation.KeepWhenStopped)
+        self.anim.setDuration(500)
+        self.anim.setStartValue(start_value)
+        self.anim.setEndValue(end_value)
+        self.anim.setEasingCurve(QEasingCurve.InOutQuart)
+        self.anim.start()
 
     def worker(self) -> None:
         """
@@ -349,6 +361,11 @@ class Ui(QMainWindow):
 
 
 if __name__ == "__main__":
+    # Enable High DPI Display
+    if hasattr(Qt, 'AA_EnableHighDpiScaling'):
+        QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
+    if hasattr(Qt, 'AA_UseHighDpiPixmaps'):
+        QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps, True)
     app = QApplication(sys.argv)
     window = Ui()
     sys.exit(app.exec())
