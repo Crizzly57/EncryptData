@@ -1,4 +1,0 @@
-pyinstaller .\main.py .\crypt.py --noconsole --add-data "GUI.ui;." --add-data "icon\icon.png;." --add-data "icon\exit.png;." --add-data "icon\Info.png;." --add-data "icon\folder.ico;." --add-data "icon\file.ico;." --icon "icon\icon.ico" --clean
-
-Try with upx:
-pyinstaller -F .\main.py .\crypt.py --noconsole --clean --upx-dir "C:\Users\Sven\Downloads\upx-3.96-win64" --upx-exclude "VCRUNTIME140.dll"

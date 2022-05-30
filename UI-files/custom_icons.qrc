@@ -1,0 +1,21 @@
+<RCC>
+  <qresource prefix="icons">
+    <file>icons/x.svg</file>
+    <file>icons/align-justify.svg</file>
+    <file>icons/align-left.svg</file>
+    <file>icons/align-right.svg</file>
+    <file>icons/arrow-down.svg</file>
+    <file>icons/file.ico</file>
+    <file>icons/file.svg</file>
+    <file>icons/file-plus.svg</file>
+    <file>icons/folder.ico</file>
+    <file>icons/folder.svg</file>
+    <file>icons/folder-plus.svg</file>
+    <file>icons/info.svg</file>
+    <file>icons/logo.ico</file>
+    <file>icons/logo.png</file>
+    <file>icons/maximize-2.svg</file>
+    <file>icons/minimize-2.svg</file>
+    <file>icons/settings.svg</file>
+  </qresource>
+</RCC>

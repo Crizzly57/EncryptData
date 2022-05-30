@@ -7252,13 +7252,13 @@ QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal{
                 <string/>
                </property>
                <property name="pixmap">
-                <pixmap>icon/icon.png</pixmap>
+                <pixmap resource="custom_icons.qrc">:/icons/icons/logo.png</pixmap>
                </property>
                <property name="scaledContents">
                 <bool>true</bool>
                </property>
                <property name="alignment">
-                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                <set>Qt::AlignCenter</set>
                </property>
                <property name="margin">
                 <number>0</number>
