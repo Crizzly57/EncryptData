@@ -8,9 +8,9 @@ ToDo:
 import os
 import sys
 import crypt
-from PyQt6.QtWidgets import QApplication, QMainWindow, QMessageBox, QListWidget, QListWidgetItem
-from PyQt6.QtGui import QIcon, QAction, QDropEvent, QDragEnterEvent, QDragMoveEvent
-from PyQt6.QtCore import Qt, QRect
+from PyQt6.QtWidgets import *
+from PyQt6.QtGui import QIcon, QAction, QDropEvent, QDragEnterEvent, QDragMoveEvent, QFont, QPalette, QBrush, QColor
+from PyQt6.QtCore import Qt, QRect, QSize
 from PyQt6.uic import loadUi
 
 
@@ -119,7 +119,6 @@ class Ui(QMainWindow):
     def __init__(self):
         super().__init__()
         loadUi("GUI.ui", self)
-        self.drop_data = DragDrop(self)
         self.setup_ui()
         self.pass_input.textChanged.connect(lambda: self.start_button.setEnabled(True))
         self.remove_all.clicked.connect(self.remove_all_items)
@@ -127,13 +126,7 @@ class Ui(QMainWindow):
 
     def setup_ui(self) -> None:
         """UI laden und anpassungen an dieser vornehmen."""
-        self.drop_data.setObjectName("drop_data")
-        self.drop_data.setGeometry(QRect(20, 40, 561, 190))
-        self.drop_data.setToolTip("Hier Dateien ablegen")
-        self.setWindowTitle("Daten schützen")
         self.setWindowIcon(QIcon(r"icon\icon.png"))
-        self.statusBar()
-        self.pass_input.setToolTip('Passwort Eingabe')
 
         # Erstellen einer Exit Action
         exit_button = QAction(QIcon(r'icon\exit.png'), '&Exit', self)
@@ -263,8 +256,10 @@ class Main:
         """
         self.get_inputs()
         if self.password:
+            w.progress_bar.setValue(0)
+            parts = round(100 / len(self.file_list))    # Prozentteile je Datei
             enc_or_dec = self.check_enc_or_dec()
-            for file in self.file_list:
+            for i, file in enumerate(self.file_list):
                 if file.lower().endswith('.pdf') and enc_or_dec == 'enc':
                     num = crypt.encrypt_pdf(file, self.password)
                 elif file.lower().endswith('.pdf') and enc_or_dec == 'dec':
@@ -276,6 +271,7 @@ class Main:
                 if w.delete_files.isChecked():
                     os.remove(file)
                 self.messages(num, file)
+                w.progress_bar.setValue(parts * (i + 1))
             self.messages(6, '')  # Setzen der Statusmeldung "Fertig"
             self.clear_all()
 
@@ -428,10 +424,11 @@ class Main:
         w.pass_input.setEnabled(True)
 
     def clear_all(self) -> None:
-        """Ablöschen der Passworteingabe, desr QListWidgetItems und der "self.file_list"."""
+        """Ablöschen der Passworteingabe, des QListWidgetItems und der "self.file_list"."""
         w.pass_input.clear()
         w.remove_all_items()
         self.file_list = []
+        self.password = ""
 
 
 if __name__ == "__main__":

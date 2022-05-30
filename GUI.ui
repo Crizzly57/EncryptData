@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
+  <property name="windowModality">
+   <enum>Qt::NonModal</enum>
+  </property>
   <property name="enabled">
    <bool>true</bool>
   </property>
@@ -10,7 +13,7 @@
     <x>0</x>
     <y>0</y>
     <width>600</width>
-    <height>580</height>
+    <height>620</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -22,13 +25,13 @@
   <property name="minimumSize">
    <size>
     <width>600</width>
-    <height>580</height>
+    <height>620</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>600</width>
-    <height>580</height>
+    <height>620</height>
    </size>
   </property>
   <property name="baseSize">
@@ -43,16 +46,22 @@
    </font>
   </property>
   <property name="acceptDrops">
-   <bool>true</bool>
+   <bool>false</bool>
   </property>
   <property name="windowTitle">
-   <string/>
+   <string>Daten schützen</string>
   </property>
   <property name="styleSheet">
    <string notr="true"/>
   </property>
   <property name="inputMethodHints">
    <set>Qt::ImhNone</set>
+  </property>
+  <property name="toolButtonStyle">
+   <enum>Qt::ToolButtonIconOnly</enum>
+  </property>
+  <property name="tabShape">
+   <enum>QTabWidget::Rounded</enum>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QWidget" name="gridLayoutWidget_2">
@@ -93,7 +102,7 @@
      <item row="1" column="2">
       <widget class="QPushButton" name="start_button">
        <property name="enabled">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
        <property name="text">
         <string>Start</string>
@@ -154,7 +163,7 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>520</y>
+      <y>560</y>
       <width>91</width>
       <height>16</height>
      </rect>
@@ -172,7 +181,7 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>370</y>
+      <y>410</y>
       <width>561</width>
       <height>151</height>
      </rect>
@@ -248,8 +257,8 @@
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
-      <x>560</x>
-      <y>520</y>
+      <x>557</x>
+      <y>560</y>
       <width>31</width>
       <height>16</height>
      </rect>
@@ -268,7 +277,7 @@
      <rect>
       <x>20</x>
       <y>240</y>
-      <width>251</width>
+      <width>261</width>
       <height>21</height>
      </rect>
     </property>
@@ -305,9 +314,39 @@
      <string>ausgewählte löschen</string>
     </property>
    </widget>
+   <widget class="QProgressBar" name="progress_bar">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>380</y>
+      <width>561</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="value">
+     <number>0</number>
+    </property>
+   </widget>
+   <widget class="DragDrop" name="drop_data">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>10</y>
+      <width>561</width>
+      <height>199</height>
+     </rect>
+    </property>
+   </widget>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>DragDrop</class>
+   <extends>QListWidget</extends>
+   <header>main.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
