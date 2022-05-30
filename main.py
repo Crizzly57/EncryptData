@@ -21,6 +21,35 @@ import resources
 GLOBAL_STATE = 0
 
 
+class Settings(QDialog):
+    def __init__(self):
+        super(Settings, self).__init__()
+        loadUi("settings.ui", self)
+
+        self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
+        self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
+        self.header = self.findChild(QFrame, 'header')
+        self.close = self.findChild(QPushButton, 'close')
+
+        def move_window(event):
+            """
+            Wenn mit dem linken Mouse button das Fenster bewegt wird,
+            wird die neue Position errechnet.
+            """
+            if event.buttons() == Qt.MouseButton.LeftButton:
+                self.move(self.pos() + event.globalPos() - self.drag_pos)
+                self.drag_pos = event.globalPos()
+                event.accept()
+            else:
+                event.ignore()
+        self.header.mouseMoveEvent = move_window
+
+        def window_pressed(event):
+            """Wenn das Fenster am Header angedrückt wird, aktuelle Position zwischenspeichern."""
+            self.drag_pos = event.globalPos()
+        self.header.mousePressEvent = window_pressed
+
+
 class InfoDialog(QDialog):
     def __init__(self):
         super(InfoDialog, self).__init__()
@@ -98,6 +127,7 @@ class Ui(QMainWindow):
         self.delete_files = self.findChild(QCheckBox, 'delete_files')
         self.side_menu = self.findChild(QFrame, 'side_menu')
         self.info_btn = self.findChild(QPushButton, 'info_btn')
+        self.settings_btn = self.findChild(QPushButton, 'settings_btn')
         # Objekt für die Animation des Sidemenu
         self.anim = QPropertyAnimation(self.side_menu, b'maximumWidth')
 
@@ -251,6 +281,7 @@ class Main:
         self.ui.pass_input.returnPressed.connect(self.worker)
         self.ui.start_button.clicked.connect(self.worker)
         self.ui.info_btn.clicked.connect(self.show_info)
+        self.ui.settings_btn.clicked.connect(self.show_settings)
         self.ui.close.clicked.connect(app.quit)
 
         sys.exit(app.exec())
@@ -470,6 +501,11 @@ class Main:
         info_dialog = InfoDialog()
         info_dialog.close.clicked.connect(info_dialog.accept)
         info_dialog.exec_()
+
+    def show_settings(self) -> None:
+        settings_dialog = Settings()
+        settings_dialog.close.clicked.connect(settings_dialog.accept)
+        settings_dialog.exec_()
 
 
 if __name__ == "__main__":

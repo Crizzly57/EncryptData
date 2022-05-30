@@ -1,8 +1,5 @@
 """
 Autor: Sven Kleinhans
-Beschreibung:
-In dieser Datei befinden sich alle Funktionen und Signaltrigger für die UI.
-Ebenso erweiterte definitionen für die UI.
 """
 
 import os

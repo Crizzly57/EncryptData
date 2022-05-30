@@ -147,22 +147,22 @@ QProgressBar{
 	border: 1px solid grey;
 	color: rgb(175, 175, 175);
 	border-radius: 10px;
-	
 	background-color: rgb(13, 12, 23);
 }
 QListWidget{
 	border: 1px solid grey;
 	border-radius: 10px;
+	outline: 0px;
 }
 QListWidget:Item{
 	color: rgb(175, 175, 175);
 	border-radius: 10px;
 }
 QListWidget:Item:Selected{
-	background-color: rgba(13, 12, 23, 100);
+	background-color: rgba(128, 128, 128, 100);
 }
 QListWidget:Item:Hover{
-	background-color: rgba(35, 31, 60, 150);
+	background-color: rgba(128, 128, 128, 150);
 }
 
 /* VERTICAL SCROLLBAR */
