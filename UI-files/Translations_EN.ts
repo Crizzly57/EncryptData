@@ -16,26 +16,26 @@
     <message>
         <location filename="info.ui" line="1929"/>
         <source>&amp;lt;html&amp;gt;&amp;lt;head/&amp;gt;&amp;lt;body&amp;gt;&amp;lt;p align=&amp;quot;center&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot; font-size:10pt; color:#e60540;&amp;quot;&amp;gt;Ersteller: Sven Kleinhans&amp;lt;/span&amp;gt;&amp;lt;/p&amp;gt;&amp;lt;p align=&amp;quot;center&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot; font-size:10pt; color:#e60540;&amp;quot;&amp;gt;Version: 1.2&amp;lt;/span&amp;gt;&amp;lt;/p&amp;gt;&amp;lt;p align=&amp;quot;center&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot; font-size:10pt; color:#e60540;&amp;quot;&amp;gt;Datum: 16.05.2022&amp;lt;/span&amp;gt;&amp;lt;/p&amp;gt;&amp;lt;p align=&amp;quot;center&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot; color:#afb1b3;&amp;quot;&amp;gt;_______________________________________________________________________________________________________&amp;lt;/span&amp;gt;&amp;lt;/p&amp;gt;&amp;lt;p align=&amp;quot;center&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot; font-size:10pt; color:#e60540;&amp;quot;&amp;gt;Verwendung:&amp;lt;/span&amp;gt;&amp;lt;/p&amp;gt;&amp;lt;p align=&amp;quot;center&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot; font-size:10pt; color:#e60540;&amp;quot;&amp;gt;1. Dateien oder Verzeichnise einfügen&amp;lt;/span&amp;gt;&amp;lt;/p&amp;gt;&amp;lt;p align=&amp;quot;center&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot; font-size:10pt; color:#e60540;&amp;quot;&amp;gt;2. Wählen zwischen entschlüsseln und verschlüsseln&amp;lt;/span&amp;gt;&amp;lt;/p&amp;gt;&amp;lt;p align=&amp;quot;center&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot; font-size:10pt; color:#e60540;&amp;quot;&amp;gt;3. Passwort eingeben&amp;lt;/span&amp;gt;&amp;lt;/p&amp;gt;&amp;lt;p align=&amp;quot;center&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot; color:#afb1b3;&amp;quot;&amp;gt;_______________________________________________________________________________________________________&amp;lt;/span&amp;gt;&amp;lt;/p&amp;gt;&amp;lt;p align=&amp;quot;center&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot; font-size:10pt; color:#e60540;&amp;quot;&amp;gt;Ein sicheres Passwort muss mindestens:&amp;lt;/span&amp;gt;&amp;lt;/p&amp;gt;&amp;lt;p align=&amp;quot;center&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot; font-size:10pt; color:#e60540;&amp;quot;&amp;gt;- 10 Zeichen beinhalten&amp;lt;/span&amp;gt;&amp;lt;/p&amp;gt;&amp;lt;p align=&amp;quot;center&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot; font-size:10pt; color:#e60540;&amp;quot;&amp;gt;- Einen Groß- und Kleinbuchstaben beinhalten&amp;lt;/span&amp;gt;&amp;lt;/p&amp;gt;&amp;lt;p align=&amp;quot;center&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot; font-size:10pt; color:#e60540;&amp;quot;&amp;gt;- Ein &apos;#&apos;, &apos;%&apos;, &apos;@&apos; oder &apos;$&apos; beinhalten&amp;lt;/span&amp;gt;&amp;lt;/p&amp;gt;&amp;lt;/body&amp;gt;&amp;lt;/html&amp;gt;</source>
-        <translation>&lt;html&gt;
-&lt;head/&gt;
-&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:10pt; color:#e60540;&quot;&gt;Author: Sven Kleinhans&lt;/span&gt;&lt;/p&gt;
-&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:10pt; color:#e60540;&quot;&gt;Version: 1.2&lt;/span&gt;&lt;/p&gt;
-&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:10pt; color:#e60540;&quot;&gt;Date: 16.05.2022&lt;/span&gt;&lt;/p&gt;
-&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; color:#afb1b3;&quot;&gt;_______________________________________________________________________________________________________&lt;/span&gt;
-&lt;/p&gt;
-&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:10pt; color:#e60540;&quot;&gt;Usage:&lt;/span&gt;&lt;/p&gt;
-&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:10pt; color:#e60540;&quot;&gt;1. Drop files and directorys&lt;/span&gt;&lt;/p&gt;
-&lt;p align=&quot;center&quot;&gt;&lt;span
-        style=&quot; font-size:10pt; color:#e60540;&quot;&gt;2. Choose between encrypt and decrypt&lt;/span&gt;&lt;/p&gt;
-&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:10pt; color:#e60540;&quot;&gt;3. Insert password&lt;/span&gt;&lt;/p&gt;
-&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; color:#afb1b3;&quot;&gt;_______________________________________________________________________________________________________&lt;/span&gt;
-&lt;/p&gt;
-&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:10pt; color:#e60540;&quot;&gt;A safe password should contain:&lt;/span&gt;&lt;/p&gt;
-&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:10pt; color:#e60540;&quot;&gt;- 10 signs&lt;/span&gt;&lt;/p&gt;
-&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:10pt; color:#e60540;&quot;&gt;- One capital and on lower letter&lt;/span&gt;&lt;/p&gt;
-&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:10pt; color:#e60540;&quot;&gt;- On of this special signs &apos;#&apos;, &apos;%&apos;, &apos;@&apos; &apos;$&apos;&lt;/span&gt;&lt;/p&gt;
-&lt;/body&gt;
-&lt;/html&gt;</translation>
+        <translation type="obsolete">&amp;lt;html&amp;gt;
+&amp;lt;head/&amp;gt;
+&amp;lt;body&amp;gt;&amp;lt;p align=&amp;quot;center&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot; font-size:10pt; color:#e60540;&amp;quot;&amp;gt;Author: Sven Kleinhans&amp;lt;/span&amp;gt;&amp;lt;/p&amp;gt;
+&amp;lt;p align=&amp;quot;center&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot; font-size:10pt; color:#e60540;&amp;quot;&amp;gt;Version: 1.2&amp;lt;/span&amp;gt;&amp;lt;/p&amp;gt;
+&amp;lt;p align=&amp;quot;center&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot; font-size:10pt; color:#e60540;&amp;quot;&amp;gt;Date: 16.05.2022&amp;lt;/span&amp;gt;&amp;lt;/p&amp;gt;
+&amp;lt;p align=&amp;quot;center&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot; color:#afb1b3;&amp;quot;&amp;gt;_______________________________________________________________________________________________________&amp;lt;/span&amp;gt;
+&amp;lt;/p&amp;gt;
+&amp;lt;p align=&amp;quot;center&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot; font-size:10pt; color:#e60540;&amp;quot;&amp;gt;Usage:&amp;lt;/span&amp;gt;&amp;lt;/p&amp;gt;
+&amp;lt;p align=&amp;quot;center&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot; font-size:10pt; color:#e60540;&amp;quot;&amp;gt;1. Drop files and directorys&amp;lt;/span&amp;gt;&amp;lt;/p&amp;gt;
+&amp;lt;p align=&amp;quot;center&amp;quot;&amp;gt;&amp;lt;span
+        style=&amp;quot; font-size:10pt; color:#e60540;&amp;quot;&amp;gt;2. Choose between encrypt and decrypt&amp;lt;/span&amp;gt;&amp;lt;/p&amp;gt;
+&amp;lt;p align=&amp;quot;center&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot; font-size:10pt; color:#e60540;&amp;quot;&amp;gt;3. Insert password&amp;lt;/span&amp;gt;&amp;lt;/p&amp;gt;
+&amp;lt;p align=&amp;quot;center&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot; color:#afb1b3;&amp;quot;&amp;gt;_______________________________________________________________________________________________________&amp;lt;/span&amp;gt;
+&amp;lt;/p&amp;gt;
+&amp;lt;p align=&amp;quot;center&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot; font-size:10pt; color:#e60540;&amp;quot;&amp;gt;A safe password should contain:&amp;lt;/span&amp;gt;&amp;lt;/p&amp;gt;
+&amp;lt;p align=&amp;quot;center&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot; font-size:10pt; color:#e60540;&amp;quot;&amp;gt;- 10 signs&amp;lt;/span&amp;gt;&amp;lt;/p&amp;gt;
+&amp;lt;p align=&amp;quot;center&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot; font-size:10pt; color:#e60540;&amp;quot;&amp;gt;- One capital and on lower letter&amp;lt;/span&amp;gt;&amp;lt;/p&amp;gt;
+&amp;lt;p align=&amp;quot;center&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot; font-size:10pt; color:#e60540;&amp;quot;&amp;gt;- On of this special signs &apos;#&apos;, &apos;%&apos;, &apos;@&apos; &apos;$&apos;&amp;lt;/span&amp;gt;&amp;lt;/p&amp;gt;
+&amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;</translation>
     </message>
 </context>
 <context>
@@ -127,51 +127,6 @@
         <location filename="settings.ui" line="2256"/>
         <source>alte Dateien nach dem Vorgang löschen</source>
         <translation>delete old files after success</translation>
-    </message>
-    <message>
-        <location filename="settings.ui" line="2392"/>
-        <source>Auswahl des Hash-Algorithmus für das hashing des Key</source>
-        <translation>Choose hash-algorithm for the hashing of the key</translation>
-    </message>
-    <message>
-        <location filename="settings.ui" line="2613"/>
-        <source>SHA2-224</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="settings.ui" line="2618"/>
-        <source>SHA2-256</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="settings.ui" line="2623"/>
-        <source>SHA2-384</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="settings.ui" line="2628"/>
-        <source>SHA2-512</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="settings.ui" line="2633"/>
-        <source>SHA3-224</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="settings.ui" line="2638"/>
-        <source>SHA3-256</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="settings.ui" line="2643"/>
-        <source>SHA3-384</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="settings.ui" line="2648"/>
-        <source>SHA3-512</source>
-        <translation></translation>
     </message>
 </context>
 </TS>
