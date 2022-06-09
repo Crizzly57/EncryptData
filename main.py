@@ -25,13 +25,8 @@ class Settings(QDialog, Ui_settings):
     def __init__(self):
         super(Settings, self).__init__()
         self.setupUi(self)
-
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
-        self.header = self.findChild(QFrame, 'header')
-        self.close = self.findChild(QPushButton, 'close')
-        self.delete_files = self.findChild(QCheckBox, 'delete_files')
-        self.language_slider = self.findChild(QSlider, 'language_slider')
 
         def move_window(event):
             """Calculate the new position of the window and move it"""
@@ -53,7 +48,6 @@ class InfoDialog(QDialog, Ui_Dialog):
     def __init__(self):
         super(InfoDialog, self).__init__()
         self.setupUi(self)
-
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
 
@@ -73,6 +67,7 @@ class InfoDialog(QDialog, Ui_Dialog):
         self.header.mousePressEvent = window_pressed
 
     def change_label_lang(self, lang: str):
+        """Set the language of the InfoLabel on language change"""
         if lang == "EN":
             self.info_text.setText(open("UI-files/InfoLabel_EN.html", "r").read())
         elif lang == "DE":
@@ -103,30 +98,7 @@ class Ui(QMainWindow, Ui_MainWindow):
             self.trans.load("out.qm")
             QtCore.QCoreApplication.instance().installTranslator(self.trans)
             self.settings.language_slider.setValue(0)
-
-        # Find objects in the UI-XML
-        self.pass_input = self.findChild(QLineEdit, 'pass_input')
-        self.remove_all = self.findChild(QPushButton, 'remove_all')
-        self.close = self.findChild(QPushButton, 'close')
-        self.minimize = self.findChild(QPushButton, 'minimize')
-        self.maximize = self.findChild(QPushButton, 'maximize')
-        self.remove_selected = self.findChild(QPushButton, 'remove_selected')
-        self.start_button = self.findChild(QPushButton, 'start_button')
-        self.slider = self.findChild(QPushButton, 'slider')
-        self.sizegrip_bl = self.findChild(QFrame, 'sizegrip_bl')
-        self.sizegrip_br = self.findChild(QFrame, 'sizegrip_br')
-        self.progress_bar = self.findChild(QProgressBar, 'progress_bar')
-        self.main_layout = self.findChild(QLayout, 'main_layout')
-        self.main_frame = self.findChild(QFrame, 'main_frame')
-        self.header = self.findChild(QFrame, 'header')
-        self.enc = self.findChild(QRadioButton, 'enc')
-        self.dec = self.findChild(QRadioButton, 'dec')
-        self.message = self.findChild(QTextBrowser, 'message')
-        self.drop_data = self.findChild(DragDrop, 'drop_data')
-        self.delete_files = self.findChild(QCheckBox, 'delete_files')
-        self.side_menu = self.findChild(QFrame, 'side_menu')
-        self.info_btn = self.findChild(QPushButton, 'info_btn')
-        self.settings_btn = self.findChild(QPushButton, 'settings_btn')
+            self.info_dialog.change_label_lang("EN")
         self.anim = QPropertyAnimation(self.side_menu, b'maximumWidth')
 
         self.setup_ui()
