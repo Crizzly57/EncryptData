@@ -598,7 +598,7 @@ class Ui_Dialog(object):
         self.close.setStyleSheet("")
         self.close.setText("")
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("UI-files\\icons/x.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap("../UI-files/icons/x.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.close.setIcon(icon)
         self.close.setIconSize(QtCore.QSize(20, 20))
         self.close.setObjectName("close")

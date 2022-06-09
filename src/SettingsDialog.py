@@ -641,7 +641,7 @@ class Ui_settings(object):
 "")
         self.close.setText("")
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("UI-files\\icons/x.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap("../UI-files/icons/x.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.close.setIcon(icon)
         self.close.setIconSize(QtCore.QSize(20, 20))
         self.close.setObjectName("close")
@@ -812,4 +812,3 @@ class Ui_settings(object):
         self.english.setText(_translate("settings", "EN"))
         self.german.setText(_translate("settings", "DE"))
         self.delete_files.setText(_translate("settings", "alte Dateien nach dem Vorgang löschen"))
-import custom_icons_rc
