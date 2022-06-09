@@ -2,30 +2,35 @@
 Author: Sven Kleinhans
 Version: 1.2
 """
+from PyQt5 import QtCore
+
 import crypt
 import sys
 import os
+from GUI import Ui_MainWindow
+from InfoDialog import Ui_Dialog
+from SettingsDialog import Ui_settings
 from custom_classes import DragDrop
-from PyQt5.uic import loadUi
 from PyQt5.QtWidgets import *
-from PyQt5.QtCore import Qt, QPropertyAnimation, QAbstractAnimation, QEasingCurve
+from PyQt5.QtCore import Qt, QPropertyAnimation, QAbstractAnimation, QEasingCurve, QTranslator, QLocale, QEvent
 from PyQt5.QtGui import QIcon
 # The resource file wich contains the icons as bytes
-import resources
+import custom_icons_rc
 
 
 GLOBAL_STATE = 0
 
 
-class Settings(QDialog):
+class Settings(QDialog, Ui_settings):
     def __init__(self):
         super(Settings, self).__init__()
-        loadUi("UI-files/settings.ui", self)
+        self.setupUi(self)
 
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
         self.header = self.findChild(QFrame, 'header')
         self.close = self.findChild(QPushButton, 'close')
+        self.language_slider = self.findChild(QSlider, 'language_slider')
 
         def move_window(event):
             """Calculate the new position of the window and move it"""
@@ -43,10 +48,10 @@ class Settings(QDialog):
         self.header.mousePressEvent = window_pressed
 
 
-class InfoDialog(QDialog):
+class InfoDialog(QDialog, Ui_Dialog):
     def __init__(self):
         super(InfoDialog, self).__init__()
-        loadUi("UI-files/info.ui", self)
+        self.setupUi(self)
 
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
@@ -69,7 +74,7 @@ class InfoDialog(QDialog):
         self.header.mousePressEvent = window_pressed
 
 
-class Ui(QMainWindow):
+class Ui(QMainWindow, Ui_MainWindow):
     """
     Methods
     -------
@@ -84,7 +89,15 @@ class Ui(QMainWindow):
     """
     def __init__(self):
         super(Ui, self).__init__()
-        loadUi("UI-files/GUI.ui", self)
+        self.setupUi(self)
+        self.settings = Settings()
+        self.info_dialog = InfoDialog()
+        self.trans = QTranslator()
+        # Check on startup if system has no german language
+        if not QLocale().system().name() == "de_DE":
+            self.trans.load("out.qm")
+            QtCore.QCoreApplication.instance().installTranslator(self.trans)
+            self.settings.language_slider.setValue(0)
 
         # Find objects in the UI-XML
         self.pass_input = self.findChild(QLineEdit, 'pass_input')
@@ -174,6 +187,20 @@ class Ui(QMainWindow):
         self.anim.setEasingCurve(QEasingCurve.InOutQuart)
         self.anim.start()
 
+    @QtCore.pyqtSlot(int)
+    def change_language(self, state):
+        if state == 0:
+            self.trans.load("UI-files/Translations_EN.qm")
+            QApplication.instance().installTranslator(self.trans)
+        else:
+            QApplication.instance().removeTranslator(self.trans)
+
+    def changeEvent(self, event):
+        if event.type() == QEvent.LanguageChange:
+            self.retranslateUi(self)
+            self.settings.retranslateUi(self)
+            self.info_dialog.retranslateUi(self)
+
 
 class Main:
     """
@@ -225,14 +252,7 @@ class Main:
     def __init__(self):
         self.file_list = []
         self.password = ""
-        # Enable High DPI Display
-        if hasattr(Qt, 'AA_EnableHighDpiScaling'):
-            QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
-        if hasattr(Qt, 'AA_UseHighDpiPixmaps'):
-            QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps, True)
-        app = QApplication(sys.argv)
         self.ui = Ui()
-
         # Define Events for the UI
         self.ui.remove_all.clicked.connect(self.remove_all_items)
         self.ui.remove_selected.clicked.connect(self.remove_selected_items)
@@ -241,8 +261,6 @@ class Main:
         self.ui.info_btn.clicked.connect(self.show_info)
         self.ui.settings_btn.clicked.connect(self.show_settings)
         self.ui.close.clicked.connect(app.quit)
-
-        sys.exit(app.exec())
 
     def worker(self) -> None:
         """The worker for the encryption and decryption"""
@@ -421,20 +439,24 @@ class Main:
                 self.ui.drop_data.takeItem(index)
                 del self.ui.drop_data.paths[index]
 
-    @staticmethod
-    def show_info() -> None:
+    def show_info(self) -> None:
         """Show the Info Dialog"""
-        info_dialog = InfoDialog()
-        info_dialog.close.clicked.connect(info_dialog.accept)
-        info_dialog.exec_()
+        self.ui.info_dialog.close.clicked.connect(self.ui.info_dialog.accept)
+        self.ui.info_dialog.exec_()
 
-    @staticmethod
-    def show_settings() -> None:
+    def show_settings(self) -> None:
         """Show the Settings Dialog"""
-        settings_dialog = Settings()
-        settings_dialog.close.clicked.connect(settings_dialog.accept)
-        settings_dialog.exec_()
+        self.ui.settings.close.clicked.connect(self.ui.settings.accept)
+        self.ui.settings.language_slider.valueChanged.connect(self.ui.change_language)
+        self.ui.settings.exec_()
 
 
 if __name__ == "__main__":
+    # Enable High DPI Display
+    if hasattr(Qt, 'AA_EnableHighDpiScaling'):
+        QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
+    if hasattr(Qt, 'AA_UseHighDpiPixmaps'):
+        QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps, True)
+    app = QApplication(sys.argv)
     main = Main()
+    sys.exit(app.exec())
