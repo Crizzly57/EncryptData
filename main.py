@@ -30,6 +30,7 @@ class Settings(QDialog, Ui_settings):
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
         self.header = self.findChild(QFrame, 'header')
         self.close = self.findChild(QPushButton, 'close')
+        self.delete_files = self.findChild(QCheckBox, 'delete_files')
         self.language_slider = self.findChild(QSlider, 'language_slider')
 
         def move_window(event):
@@ -278,7 +279,7 @@ class Main:
                     num = crypt.encrypt(file, self.password)
                 else:
                     num = crypt.decrypt(file, self.password)
-                if self.ui.delete_files.isChecked() and num not in (101, 102):
+                if self.ui.settings.delete_files.isChecked() and num not in (101, 102):
                     os.remove(file)
                 self.messages(num, file)
                 self.ui.progress_bar.setValue(parts * (i + 1))
