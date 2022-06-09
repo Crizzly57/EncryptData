@@ -938,7 +938,7 @@ class Ui_settings(object):
         self.english.setText(_translate("settings", "EN"))
         self.german.setText(_translate("settings", "DE"))
         self.delete_files.setText(_translate("settings", "alte Dateien nach dem Vorgang löschen"))
-        self.label_3.setText(_translate("settings", "Auswahl des Hash-Algorithmus"))
+        self.label_3.setText(_translate("settings", "Auswahl des Hash-Algorithmus für das hashing des Key"))
         self.comboBox.setItemText(0, _translate("settings", "SHA2-224"))
         self.comboBox.setItemText(1, _translate("settings", "SHA2-256"))
         self.comboBox.setItemText(2, _translate("settings", "SHA2-384"))

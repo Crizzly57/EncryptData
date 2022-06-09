@@ -2389,7 +2389,7 @@ QSlider::handle:horizontal{
             </font>
            </property>
            <property name="text">
-            <string>Auswahl des Hash-Algorithmus</string>
+            <string>Auswahl des Hash-Algorithmus für das hashing des Key</string>
            </property>
           </widget>
          </item>

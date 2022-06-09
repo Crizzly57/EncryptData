@@ -56,8 +56,6 @@ class InfoDialog(QDialog, Ui_Dialog):
 
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
-        self.header = self.findChild(QFrame, 'header')
-        self.close = self.findChild(QPushButton, 'close')
 
         def move_window(event):
             """Calculate the new position of the window and move it"""
@@ -73,6 +71,12 @@ class InfoDialog(QDialog, Ui_Dialog):
             """Save the global position of the window"""
             self.drag_pos = event.globalPos()
         self.header.mousePressEvent = window_pressed
+
+    def change_label_lang(self, lang: str):
+        if lang == "EN":
+            self.info_text.setText(open("UI-files/InfoLabel_EN.html", "r").read())
+        elif lang == "DE":
+            self.info_text.setText(open("UI-files/InfoLabel_DE.html", "r").read())
 
 
 class Ui(QMainWindow, Ui_MainWindow):
@@ -193,14 +197,16 @@ class Ui(QMainWindow, Ui_MainWindow):
         if state == 0:
             self.trans.load("UI-files/Translations_EN.qm")
             QApplication.instance().installTranslator(self.trans)
+            self.info_dialog.change_label_lang("EN")
         else:
             QApplication.instance().removeTranslator(self.trans)
+            self.info_dialog.change_label_lang("DE")
 
     def changeEvent(self, event):
         if event.type() == QEvent.LanguageChange:
             self.retranslateUi(self)
             self.settings.retranslateUi(self)
-            self.info_dialog.retranslateUi(self)
+            # self.info_dialog.retranslateUi(self)    # Not working
 
 
 class Main:
