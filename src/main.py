@@ -7,14 +7,12 @@ from PyQt5 import QtCore
 from src import crypt
 import sys
 import os
-from src.GUI import Ui_MainWindow
-from src.InfoDialog import Ui_Dialog
+from GUI import Ui_MainWindow
+from InfoDialog import Ui_Dialog
 from SettingsDialog import Ui_settings
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import Qt, QPropertyAnimation, QAbstractAnimation, QEasingCurve, QTranslator, QLocale, QEvent
 from PyQt5.QtGui import QIcon
-# The resource file wich contains the icons as bytes
-
 
 GLOBAL_STATE = 0
 
@@ -91,12 +89,14 @@ class Ui(QMainWindow, Ui_MainWindow):
         self.settings = Settings()
         self.info_dialog = InfoDialog()
         self.trans = QTranslator()
+        self.lang = "DE"
         # Check on startup if system has no german language
-        if not QLocale().system().name() == "de_DE":
+        if not QLocale().system().name().split("_")[0] == "de":
             self.trans.load("../UI-files/Translations_EN.qm")
             QtCore.QCoreApplication.instance().installTranslator(self.trans)
             self.settings.language_slider.setValue(0)
             self.info_dialog.change_label_lang("EN")
+            self.lang = "EN"
         self.anim = QPropertyAnimation(self.side_menu, b'maximumWidth')
 
         self.setup_ui()
@@ -168,9 +168,11 @@ class Ui(QMainWindow, Ui_MainWindow):
             self.trans.load("../UI-files/Translations_EN.qm")
             QApplication.instance().installTranslator(self.trans)
             self.info_dialog.change_label_lang("EN")
+            self.lang = "EN"
         else:
             QApplication.instance().removeTranslator(self.trans)
             self.info_dialog.change_label_lang("DE")
+            self.lang = "DE"
 
     def changeEvent(self, event):
         if event.type() == QEvent.LanguageChange:
@@ -347,43 +349,82 @@ class Main:
         colour = ""
         msg = ""
         if num == 1:
-            msg = "Passwort entspricht den Kriterien!"
+            if self.ui.lang == "EN":
+                msg = "Password does match the requirements!"
+            else:
+                msg = "Passwort entspricht den Kriterien!"
             colour = "green"
         elif num == 2:
-            msg = "\nVorgang abgeschlossen!"
+            if self.ui.lang == "EN":
+                msg = "\nOperation completed"
+            else:
+                msg = "\nVorgang abgeschlossen!"
             colour = "green"
         elif num == 3:
-            msg = f"Datei {file} erfolgreich entschlüsselt!"
+            if self.ui.lang == "EN":
+                msg = f"File {file} successfully decrypted!"
+            else:
+                msg = f"Datei {file} erfolgreich entschlüsselt!"
             colour = "green"
         elif num == 4:
-            msg = f"Datei {file} erfolgreich verschlüsselt!"
+            if self.ui.lang == "EN":
+                msg = f"File {file} successfully encrypted!"
+            else:
+                msg = f"Datei {file} erfolgreich verschlüsselt!"
             colour = "green"
         elif num == 100:
-            msg = "Passwort entspricht nicht den Kriterien!"
+            if self.ui.lang == "EN":
+                msg = "Password does not match the requirements!"
+            else:
+                msg = "Passwort entspricht nicht den Kriterien!"
             colour = "red"
         elif num == 101:
-            msg = f"Die Datei {file} existiert nicht!"
+            if self.ui.lang == "EN":
+                msg = f"The file {file} does not exist!"
+            else:
+                msg = f"Die Datei {file} existiert nicht!"
             colour = "red"
         elif num == 102:
-            msg = "verschlüsseln oder entschlüsseln auswählen!"
+            if self.ui.lang == "EN":
+                msg = "select encrypt or decrypt!"
+            else:
+                msg = "verschlüsseln oder entschlüsseln auswählen!"
             colour = "red"
         elif num == 103:
-            msg = f"Passwort für Datei {file} ist falsch!"
+            if self.ui.lang == "EN":
+                msg = f"Password for the file {file} is wrong!"
+            else:
+                msg = f"Passwort für Datei {file} ist falsch!"
             colour = "red"
         elif num == 104:
-            msg = f"Datei {file} ist bereits verschlüsselt!"
+            if self.ui.lang == "EN":
+                msg = f"File {file} is already encrypted!"
+            else:
+                msg = f"Datei {file} ist bereits verschlüsselt!"
             colour = "red"
         elif num == 105:
-            msg = f"Datei {file} ist nicht verschlüsselt!"
+            if self.ui.lang == "EN":
+                msg = f"File {file} is not encrypted!"
+            else:
+                msg = f"Datei {file} ist nicht verschlüsselt!"
             colour = "red"
         elif num == 106:
-            msg = "Keine Dateien oder Ordner ausgewählt!"
+            if self.ui.lang == "EN":
+                msg = "No files or folders selected!"
+            else:
+                msg = "Keine Dateien oder Ordner ausgewählt!"
             colour = "red"
         elif num == 107:
-            msg = "Pfadreferenz ungültig!"
+            if self.ui.lang == "EN":
+                msg = "Invalid path reference!"
+            else:
+                msg = "Pfadreferenz ungültig!"
             colour = "red"
         elif num == 108:
-            msg = f"Fehlende Berechtigung für die Datei {file}!"
+            if self.ui.lang == "EN":
+                msg = f"Missing permissions for the file {file}!"
+            else:
+                msg = f"Fehlende Berechtigung für die Datei {file}!"
             colour = "red"
         self.set_colour(colour, msg)
 
