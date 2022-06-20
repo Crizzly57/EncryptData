@@ -112,7 +112,7 @@ def decrypt_pdf(file: str, password: str) -> int:
     """Decrypt PDF. Return statuscode"""
     out_path = make_decrypted_file(file)
     try:
-        with Pdf.open(os.path.normpath(file), password) as input_file:
+        with Pdf.open(os.path.normpath(file), password=password) as input_file:
             if input_file.is_encrypted:
                 input_file.save(out_path)
                 return 3    # File successfully decrypted
