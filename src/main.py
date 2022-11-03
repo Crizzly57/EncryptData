@@ -65,9 +65,9 @@ class InfoDialog(QDialog, Ui_Dialog):
     def change_label_lang(self, lang: str):
         """Set the language of the InfoLabel on language change"""
         if lang == "EN":
-            self.info_text.setText(open("../UI-files/InfoLabel_EN.html", "r").read())
+            self.info_text.setText(open("./UI-files/InfoLabel_EN.html", "r").read())
         elif lang == "DE":
-            self.info_text.setText(open("../UI-files/InfoLabel_DE.html", "r").read())
+            self.info_text.setText(open("./UI-files/InfoLabel_DE.html", "r", encoding='utf-8').read())
 
 
 class Ui(QMainWindow, Ui_MainWindow):
@@ -92,7 +92,7 @@ class Ui(QMainWindow, Ui_MainWindow):
         self.lang = "DE"
         # Check on startup if system has no german language
         if not QLocale().system().name().split("_")[0] == "de":
-            self.trans.load("../UI-files/Translations_EN.qm")
+            self.trans.load("./UI-files/Translations_EN.qm")
             QtCore.QCoreApplication.instance().installTranslator(self.trans)
             self.settings.language_slider.setValue(0)
             self.info_dialog.change_label_lang("EN")
@@ -120,7 +120,7 @@ class Ui(QMainWindow, Ui_MainWindow):
         """Setup UI and make definitions"""
         self.pass_input.textChanged.connect(lambda: self.start_button.setEnabled(True))
         self.slider.clicked.connect(self.animate_sidemenu)
-        self.setWindowIcon(QIcon(r"../UI-files/icons/logo.png"))
+        self.setWindowIcon(QIcon(r"./UI-files/icons/logo.png"))
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
         QSizeGrip(self.sizegrip_bl)
@@ -165,7 +165,7 @@ class Ui(QMainWindow, Ui_MainWindow):
     @QtCore.pyqtSlot(int)
     def change_language(self, state):
         if state == 0:
-            self.trans.load("../UI-files/Translations_EN.qm")
+            self.trans.load("./UI-files/Translations_EN.qm")
             QApplication.instance().installTranslator(self.trans)
             self.info_dialog.change_label_lang("EN")
             self.lang = "EN"

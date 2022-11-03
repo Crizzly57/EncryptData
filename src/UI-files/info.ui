@@ -18,7 +18,7 @@
     <widget class="QFrame" name="main_frame">
      <property name="minimumSize">
       <size>
-       <width>407</width>
+       <width>415</width>
        <height>436</height>
       </size>
      </property>
@@ -1771,7 +1771,7 @@ QLabel#label{
                <string/>
               </property>
               <property name="pixmap">
-               <pixmap resource="custom_icons.qrc">:/icons/icons/info.svg</pixmap>
+               <pixmap resource="resources.qrc">:/icons/icons/info.svg</pixmap>
               </property>
               <property name="scaledContents">
                <bool>true</bool>
@@ -1936,7 +1936,8 @@ QLabel#label{
   </layout>
  </widget>
  <resources>
-  <include location="custom_icons.qrc"/>
+  <include location="resources.qrc"/>
+  <include location="resources.qrc"/>
  </resources>
  <connections/>
 </ui>

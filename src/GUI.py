@@ -454,7 +454,7 @@ class Ui_MainWindow(object):
         self.slider.setMinimumSize(QtCore.QSize(30, 30))
         self.slider.setText("")
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("../UI-files/icons/align-justify.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap("UI-files/icons/align-justify.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.slider.setIcon(icon)
         self.slider.setIconSize(QtCore.QSize(30, 30))
         self.slider.setObjectName("slider")
@@ -2250,7 +2250,7 @@ class Ui_MainWindow(object):
         self.minimize.setStyleSheet("")
         self.minimize.setText("")
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap("../UI-files/icons/minimize-2.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon1.addPixmap(QtGui.QPixmap("UI-files/icons/minimize-2.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.minimize.setIcon(icon1)
         self.minimize.setIconSize(QtCore.QSize(20, 20))
         self.minimize.setObjectName("minimize")
@@ -2332,7 +2332,7 @@ class Ui_MainWindow(object):
         self.maximize.setStyleSheet("")
         self.maximize.setText("")
         icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap("../UI-files/icons/maximize-2.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon2.addPixmap(QtGui.QPixmap("UI-files/icons/maximize-2.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.maximize.setIcon(icon2)
         self.maximize.setIconSize(QtCore.QSize(20, 20))
         self.maximize.setObjectName("maximize")
@@ -2414,7 +2414,7 @@ class Ui_MainWindow(object):
         self.close.setStyleSheet("")
         self.close.setText("")
         icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap("../UI-files/icons/x.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon3.addPixmap(QtGui.QPixmap("UI-files/icons/x.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.close.setIcon(icon3)
         self.close.setIconSize(QtCore.QSize(20, 20))
         self.close.setObjectName("close")
@@ -2675,4 +2675,4 @@ class Ui_MainWindow(object):
         self.creator.setText(_translate("MainWindow", "© Sven Kleinhans"))
         self.version.setText(_translate("MainWindow", "V1.2"))
 from custom_classes import DragDrop
-import custom_icons_rc
+import resources_rc
