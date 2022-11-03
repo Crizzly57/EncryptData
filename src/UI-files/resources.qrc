@@ -18,4 +18,7 @@
     <file>icons/minimize-2.svg</file>
     <file>icons/settings.svg</file>
   </qresource>
+  <qresource prefix="translation">
+    <file>Translations_EN.qm</file>
+  </qresource>
 </RCC>

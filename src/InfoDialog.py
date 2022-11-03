@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'UI-files/info.ui'
+# Form implementation generated from reading ui file 'info.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.6
 #
@@ -18,7 +18,7 @@ class Ui_Dialog(object):
         self.verticalLayout = QtWidgets.QVBoxLayout(Dialog)
         self.verticalLayout.setObjectName("verticalLayout")
         self.main_frame = QtWidgets.QFrame(Dialog)
-        self.main_frame.setMinimumSize(QtCore.QSize(407, 436))
+        self.main_frame.setMinimumSize(QtCore.QSize(415, 436))
         self.main_frame.setMaximumSize(QtCore.QSize(407, 436))
         self.main_frame.setStyleSheet("QFrame#main_frame{\n"
 "    border-radius: 10px;\n"
@@ -598,7 +598,7 @@ class Ui_Dialog(object):
         self.close.setStyleSheet("")
         self.close.setText("")
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("../UI-files/icons/x.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap("UI-files/icons/x.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.close.setIcon(icon)
         self.close.setIconSize(QtCore.QSize(20, 20))
         self.close.setObjectName("close")
@@ -681,4 +681,4 @@ class Ui_Dialog(object):
         Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
         self.label.setText(_translate("Dialog", "Info"))
         self.info_text.setText(_translate("Dialog", "<html><head/><body><p align=\"center\"><span style=\" font-size:10pt; color:#e60540;\">Ersteller: Sven Kleinhans</span></p><p align=\"center\"><span style=\" font-size:10pt; color:#e60540;\">Version: 1.2</span></p><p align=\"center\"><span style=\" font-size:10pt; color:#e60540;\">Datum: 16.05.2022</span></p><p align=\"center\"><span style=\" color:#afb1b3;\">_______________________________________________________________________________________________________</span></p><p align=\"center\"><span style=\" font-size:10pt; color:#e60540;\">Verwendung:</span></p><p align=\"center\"><span style=\" font-size:10pt; color:#e60540;\">1. Dateien oder Verzeichnise einfügen</span></p><p align=\"center\"><span style=\" font-size:10pt; color:#e60540;\">2. Wählen zwischen entschlüsseln und verschlüsseln</span></p><p align=\"center\"><span style=\" font-size:10pt; color:#e60540;\">3. Passwort eingeben</span></p><p align=\"center\"><span style=\" color:#afb1b3;\">_______________________________________________________________________________________________________</span></p><p align=\"center\"><span style=\" font-size:10pt; color:#e60540;\">Ein sicheres Passwort muss mindestens:</span></p><p align=\"center\"><span style=\" font-size:10pt; color:#e60540;\">- 10 Zeichen beinhalten</span></p><p align=\"center\"><span style=\" font-size:10pt; color:#e60540;\">- Einen Groß- und Kleinbuchstaben beinhalten</span></p><p align=\"center\"><span style=\" font-size:10pt; color:#e60540;\">- Ein \'#\', \'%\', \'@\' oder \'$\' beinhalten</span></p></body></html>"))
-import custom_icons_rc
+import resources_rc

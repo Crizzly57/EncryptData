@@ -76,8 +76,8 @@ class DragDrop(QListWidget):
     def check_typ(url: str) -> str:
         """Returns the icons for the dropped data"""
         if os.path.isdir(url):
-            return r"icons\folder.ico"
-        return r"icons\file.ico"
+            return r"UI-files\icons\folder.ico"
+        return r"UI-files\icons\file.ico"
 
     def get_paths(self) -> list:
         """Returns the paths"""
