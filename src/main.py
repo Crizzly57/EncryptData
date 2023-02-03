@@ -197,7 +197,7 @@ class Main:
                     else:
                         status_code = Crypt(file=file, password=self.password, encryption=encryption).start()
 
-                if self.ui.settings.delete_files.isChecked() and status_code not in (101, 102):
+                if self.ui.settings.delete_files.isChecked() and status_code in (3, 4):
                     os.remove(file)
                 self.messages(status_code, file)
                 self.ui.progress_bar.setValue(parts * (i + 1))
