@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'UI-files/GUI.ui'
+# Form implementation generated from reading ui file 'GUI.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.6
 #
@@ -454,7 +454,7 @@ class Ui_MainWindow(object):
         self.slider.setMinimumSize(QtCore.QSize(30, 30))
         self.slider.setText("")
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("UI-files/icons/align-justify.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(":/icons/icons/align-right.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.slider.setIcon(icon)
         self.slider.setIconSize(QtCore.QSize(30, 30))
         self.slider.setObjectName("slider")

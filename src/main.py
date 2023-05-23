@@ -107,7 +107,7 @@ class Ui(QMainWindow, Ui_MainWindow):
 
     def setup_ui(self) -> None:
         self.pass_input.textChanged.connect(lambda: self.start_button.setEnabled(True))
-        self.slider.clicked.connect(self.animate_sidemenu)
+        self.slider.clicked.connect(self.animate_side_menu)
         self.setWindowIcon(QIcon(r"./UI-files/icons/logo.png"))
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
@@ -132,13 +132,13 @@ class Ui(QMainWindow, Ui_MainWindow):
             stylesheet = self.main_frame.styleSheet() + "\n" + "QFrame{border-radius: 0px;}"
             self.main_frame.setStyleSheet(stylesheet)
 
-    def animate_sidemenu(self) -> None:
+    def animate_side_menu(self) -> None:
         if self.side_menu.frameGeometry().width() > 60:
-            # Close Sidemenu
+            # Close Side menu
             start_value = self.side_menu.frameGeometry().width()
             end_value = 50
         else:
-            # Open Sidemenu
+            # Open Side menu
             start_value = self.side_menu.frameGeometry().width()
             end_value = 200
         self.anim.DeletionPolicy(QAbstractAnimation.KeepWhenStopped)
@@ -146,7 +146,15 @@ class Ui(QMainWindow, Ui_MainWindow):
         self.anim.setStartValue(start_value)
         self.anim.setEndValue(end_value)
         self.anim.setEasingCurve(QEasingCurve.InOutQuart)
+        self.anim.finished.connect(self.set_side_menu_icon)
         self.anim.start()
+
+    def set_side_menu_icon(self):
+        width = self.side_menu.frameGeometry().width()
+        if width > 50:
+            self.slider.setIcon(QIcon(r"./UI-files/icons/align-right"))
+        else:
+            self.slider.setIcon(QIcon(r"./UI-files/icons/align-left"))
 
     @QtCore.pyqtSlot(int)
     def change_language(self, state):

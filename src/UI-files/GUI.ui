@@ -916,8 +916,8 @@ QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal{
              <string/>
             </property>
             <property name="icon">
-             <iconset>
-              <normaloff>icons/align-justify.svg</normaloff>icons/align-justify.svg</iconset>
+             <iconset resource="resources.qrc">
+              <normaloff>:/icons/icons/align-right.svg</normaloff>:/icons/icons/align-right.svg</iconset>
             </property>
             <property name="iconSize">
              <size>
@@ -6792,7 +6792,7 @@ QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal{
                 <string/>
                </property>
                <property name="pixmap">
-                <pixmap resource="custom_icons.qrc">:/icons/icons/logo.png</pixmap>
+                <pixmap resource="resources.qrc">:/icons/icons/logo.png</pixmap>
                </property>
                <property name="scaledContents">
                 <bool>true</bool>
@@ -7464,6 +7464,7 @@ QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal{
   </customwidget>
  </customwidgets>
  <resources>
+  <include location="resources.qrc"/>
   <include location="custom_icons.qrc"/>
  </resources>
  <connections/>
